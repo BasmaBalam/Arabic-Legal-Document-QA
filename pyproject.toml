@@ -5,8 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "dvc>=3.67.1",
     "fastapi>=0.141.1",
     "pydantic-settings>=2.15.0",
+    "pypdf>=6.16.2",
     "uvicorn>=0.52.4",
 ]
 

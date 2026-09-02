@@ -1,0 +1,8 @@
+stages:
+  parse:
+    cmd: uv run python -m arabic_legal_document_qa.data.parser --input data/raw/egyptian_civil_code.pdf --output data/processed/egyptian_civil_code.json
+    deps:
+      - src/arabic_legal_document_qa/data/parser.py
+      - data/raw/egyptian_civil_code.pdf
+    outs:
+      - data/processed/egyptian_civil_code.json

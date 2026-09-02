@@ -1,0 +1,23 @@
+schema: '2.0'
+stages:
+  parse:
+    cmd: uv run python -m arabic_legal_document_qa.data.parser --input 
+      data/raw/egyptian_civil_code.pdf --output 
+      data/processed/egyptian_civil_code.json
+    deps:
+    - path: data/raw/egyptian_civil_code.pdf
+      hash: md5
+      md5: 5086ef5f16f15d856278db943e58e948
+      size: 2599703
+      isexec: true
+    - path: src/arabic_legal_document_qa/data/parser.py
+      hash: md5
+      md5: 5d952c99a4243e2cbdb443425cb6e92f
+      size: 14519
+      isexec: true
+    outs:
+    - path: data/processed/egyptian_civil_code.json
+      hash: md5
+      md5: 87337b95774e42950cb3d57421c99feb
+      size: 1273470
+      isexec: true
