@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from .routes import base
+from .routes import base, document
 
 
 app = FastAPI()
@@ -14,3 +14,4 @@ async def shutdown_spam():
     pass
 
 app.include_router(base.base_router)
+app.include_router(document.document_router)
