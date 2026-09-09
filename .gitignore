@@ -12,3 +12,5 @@ wheels/
 data/raw/*.pdf
 data/processed/*
 !data/processed/*.dvc
+
+assets
