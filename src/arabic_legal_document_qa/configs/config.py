@@ -18,6 +18,10 @@ class Settings(BaseSettings):
     DEFAULT_GENERATION_TEMPERATURE: int,
     ENABLE_THINKING: bool
 
+    VECTOR_DB_BACKEND: str
+    VECTOR_DB_PATH: str
+    VECTOR_DB_DISTANCE_METHOD: str
+
     
     model_config = SettingsConfigDict(
         env_file="src/arabic_legal_document_qa/.env",

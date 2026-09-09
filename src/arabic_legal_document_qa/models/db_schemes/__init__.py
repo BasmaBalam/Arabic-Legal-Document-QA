@@ -1,0 +1,1 @@
+from arabic_legal_document_qa.models.db_schemes.retrieved_document import RetrievedDocument

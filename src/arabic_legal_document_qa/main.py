@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from .routes import base, document
 from .stores.llm.LLMProviderFactory import LLMProviderFactory
+from .stores.vectordb.VectorDBProviderFactory import VectorDBProviderFactory
 from .configs.config import Settings, get_settings
 
 app = FastAPI()
@@ -10,6 +11,7 @@ async def startup_spam():
     
     settings = get_settings()
     llm_provider_factory = LLMProviderFactory(settings)
+    vector_provider_factory = VectorDBProviderFactory(settings)
 
     # generation client
     app.generation_client = llm_provider_factory.create(provider = settings.GENERATION_BACKEND)
@@ -20,10 +22,16 @@ async def startup_spam():
     app.embedding_client.set_embedding_model(model_id=settings.EMBEDDING_MODEL_ID,
                                              embedding_size=settings.EMBEDDING_MODEL_SIZE)
 
+    # vector db client
+    app.vectordb_client = vector_provider_factory.create(
+        provider= settings.VECTOR_DB_BACKEND
+    )
+    app.vectordb_client.connect()
+
 
 @app.on_event("shutdown")
 async def shutdown_spam():
-    pass
+    app.vectordb_client.disconnect()
 
 app.include_router(base.base_router)
 app.include_router(document.document_router)

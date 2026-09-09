@@ -22,3 +22,20 @@ class BaseController:
         self.project_root = Path(__file__).resolve().parents[3]
         self.data_dir = self.project_root / "data"
         self.data_processed_dir = self.data_dir / "processed"
+
+        self.database_dir = os.path.join(
+            self.project_root,
+            "assets/database"
+        )
+
+
+    def get_database_path(self, db_name: str):
+        database_path = os.path.join(
+            self.database_dir,
+            db_name
+        )
+
+        if not os.path.exists(database_path):
+            os.makedirs(database_path)
+
+        return database_path
