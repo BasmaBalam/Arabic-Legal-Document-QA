@@ -1,5 +1,5 @@
+import os
 from pathlib import Path
-
 from arabic_legal_document_qa.configs.config import get_settings
 
 
