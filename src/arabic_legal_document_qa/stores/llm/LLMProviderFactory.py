@@ -1,5 +1,5 @@
 from .LLMEnums import LLMEnum
-from .providers import QwenProvider
+from .providers import CohereProvider, QwenProvider
 
 
 class LLMProviderFactory:
@@ -11,7 +11,6 @@ class LLMProviderFactory:
     """
 
     def __init__(self, config: dict):
-
         """
         Initialize the LLM provider factory.
 
@@ -34,10 +33,18 @@ class LLMProviderFactory:
 
         if provider == LLMEnum.QWEN.value:
             return QwenProvider(
-                default_input_max_characters = self.config.DEFAULT_INPUT_MAX_CHARACTERS,
-                default_generation_max_output_tokens= self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS,
-                default_generation_temperature = self.config.DEFAULT_GENERATION_TEMPERATURE,
-                enable_thinking= self.config.ENABLE_THINKING
+                default_input_max_characters=self.config.DEFAULT_INPUT_MAX_CHARACTERS,
+                default_generation_max_output_tokens=self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS,
+                default_generation_temperature=self.config.DEFAULT_GENERATION_TEMPERATURE,
+                enable_thinking=self.config.ENABLE_THINKING,
+            )
+
+        if provider == LLMEnum.COHERE.value:
+            return CohereProvider(
+                api_key=self.config.COHERE_API_KEY,
+                default_input_max_characters=self.config.DEFAULT_INPUT_MAX_CHARACTERS,
+                default_generation_max_output_tokens=self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS,
+                default_generation_temp=self.config.DEFAULT_GENERATION_TEMPERATURE,
             )
 
         return None

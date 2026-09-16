@@ -1,12 +1,14 @@
-import torch
 import logging
-from typing import List, Optional
-from ..LLMEnums import QwenEnums, DocumentTypeEnum
-from ..LLMInterface import LLMInterface
-from transformers import AutoModelForCausalLM, AutoTokenizer
+
+import torch
 from sentence_transformers import SentenceTransformer
+from transformers import AutoModelForCausalLM, AutoTokenizer
+
+from ..LLMEnums import DocumentTypeEnum
+from ..LLMInterface import LLMInterface
 
 logger = logging.getLogger(__name__)
+
 
 class QwenProvider(LLMInterface):
     """
@@ -32,8 +34,9 @@ class QwenProvider(LLMInterface):
         default_generation_temperature: Default sampling temperature.
         enable_thinking: Whether Qwen's internal thinking mode is enabled.
     """
+
     def __init__(
-        self, 
+        self,
         device: str = None,
         default_input_max_characters: int = 3000,
         default_generation_max_output_tokens: int = 1024,
@@ -58,24 +61,24 @@ class QwenProvider(LLMInterface):
 
         self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
         self.dtype = torch.bfloat16 if self.device == "cuda" else torch.float32
- 
-        self.generation_model_id: Optional[str] = None
+
+        self.generation_model_id: str | None = None
         self.generation_model = None
         self.generation_tokenizer = None
-        
-        # Embedding model 
-        self.embedding_model_id: Optional[str] = None
+
+        # Embedding model
+        self.embedding_model_id: str | None = None
         self.embedding_model = None
-        self.embedding_size: Optional[int] = None
+        self.embedding_size: int | None = None
 
         self.default_input_max_characters = default_input_max_characters
         self.default_generation_max_output_tokens = default_generation_max_output_tokens
         self.default_generation_temperature = default_generation_temperature
- 
+
         # Qwen3 supports an internal "thinking" mode via the chat template.
         # Off by default for RAG (lower latency, more predictable output);
         self.enable_thinking = enable_thinking
-        
+
     def set_generation_model(self, model_id: str):
         """
         Load the Qwen causal language model and its tokenizer.
@@ -89,19 +92,21 @@ class QwenProvider(LLMInterface):
         """
 
         self.generation_model_id = model_id
-        self.generation_tokenizer = AutoTokenizer.from_pretrained(self.generation_model_id)
+        self.generation_tokenizer = AutoTokenizer.from_pretrained(
+            self.generation_model_id
+        )
         self.generation_model = AutoModelForCausalLM.from_pretrained(
             self.generation_model_id,
             torch_dtype=self.dtype,
-            device_map="auto" if self.device == "cuda" else None,   
+            device_map="auto" if self.device == "cuda" else None,
         )
-        
+
         if self.device != "cuda":
             self.generation_model.to(self.device)
 
         self.generation_model.eval()
         logger.info(f"Loaded generation model: {model_id} on {self.device}")
-        
+
     def set_embedding_model(self, model_id: str, embedding_size: int):
         """
         Load and configure the Qwen embedding model.
@@ -122,12 +127,16 @@ class QwenProvider(LLMInterface):
             self.embedding_model_id,
             device=self.device,
             model_kwargs={"torch_dtype": self.dtype},
-            tokenizer_kwargs={"padding_side": "left"},  # required for Qwen3-Embedding's last-token pooling
-            truncate_dim=self.embedding_size,  
+            tokenizer_kwargs={
+                "padding_side": "left"
+            },  # required for Qwen3-Embedding's last-token pooling
+            truncate_dim=self.embedding_size,
         )
 
-        logger.info(f"Loaded embedding model: {model_id} (dim={embedding_size}) on {self.device}")
-         
+        logger.info(
+            f"Loaded embedding model: {model_id} (dim={embedding_size}) on {self.device}"
+        )
+
     def process_text(self, text: str) -> str:
         """
         Truncate and normalize input text.
@@ -155,8 +164,13 @@ class QwenProvider(LLMInterface):
         """
         return {"role": role, "content": self.process_text(prompt)}
 
-    def generate_text(self, prompt: str, chat_history: list = [], max_output_tokens: int= None,
-                      temp: float = None):
+    def generate_text(
+        self,
+        prompt: str,
+        chat_history: list | None = None,
+        max_output_tokens: int | None = None,
+        temp: float | None = None,
+    ):
         """
         Generate a response using the configured Qwen language model.
 
@@ -176,13 +190,19 @@ class QwenProvider(LLMInterface):
         """
 
         if self.generation_model is None or self.generation_tokenizer is None:
-            logger.error("Generation model was not set. Call set_generation_model first.")
+            logger.error(
+                "Generation model was not set. Call set_generation_model first."
+            )
             return None
 
-        max_output_tokens = max_output_tokens or self.default_generation_max_output_tokens
+        max_output_tokens = (
+            max_output_tokens or self.default_generation_max_output_tokens
+        )
         temp = self.default_generation_temperature if temp is None else temp
 
-        messages = list(chat_history) + [self.construct_prompt(self.process_text(prompt), role="user")]
+        messages = list(chat_history) + [
+            self.construct_prompt(self.process_text(prompt), role="user")
+        ]
 
         text_input = self.generation_tokenizer.apply_chat_template(
             messages,
@@ -190,8 +210,10 @@ class QwenProvider(LLMInterface):
             add_generation_prompt=True,
             enable_thinking=self.enable_thinking,
         )
-        
-        model_inputs = self.generation_tokenizer([text_input], return_tensors="pt").to(self.generation_model.device)
+
+        model_inputs = self.generation_tokenizer([text_input], return_tensors="pt").to(
+            self.generation_model.device
+        )
 
         generate_kwargs = dict(
             **model_inputs,
@@ -199,14 +221,16 @@ class QwenProvider(LLMInterface):
         )
 
         if temp and temp > 0:
-            generate_kwargs.update(do_sample=True, temperature=temp, top_p=0.8, top_k=20)
+            generate_kwargs.update(
+                do_sample=True, temperature=temp, top_p=0.8, top_k=20
+            )
         else:
             generate_kwargs.update(do_sample=False)
 
         with torch.no_grad():
             generated_ids = self.generation_model.generate(**generate_kwargs)
 
-        output_ids = generated_ids[0][len(model_inputs.input_ids[0]):].tolist()
+        output_ids = generated_ids[0][len(model_inputs.input_ids[0]) :].tolist()
 
         try:
             think_end_id = self.generation_tokenizer.convert_tokens_to_ids("</think>")
@@ -214,10 +238,12 @@ class QwenProvider(LLMInterface):
         except ValueError:
             split_at = 0
 
-        response = self.generation_tokenizer.decode(output_ids[split_at:], skip_special_tokens=True).strip()
+        response = self.generation_tokenizer.decode(
+            output_ids[split_at:], skip_special_tokens=True
+        ).strip()
         return response
 
-    def embed_text(self, text: str, document_type: str = None):
+    def embed_text(self, text: str, document_type: str | None = None):
         """
         Generate a normalized embedding vector for the provided text.
 
@@ -232,14 +258,18 @@ class QwenProvider(LLMInterface):
             A normalized embedding vector represented as a list of floats,
             or ``None`` if the embedding model has not been configured.
         """
-        
+
         if self.embedding_model is None:
             logger.error("Embedding model was not set. Call set_embedding_model first.")
             return None
 
         text = self.process_text(text)
 
-        prompt_name = DocumentTypeEnum.QUERY.value if document_type == DocumentTypeEnum.QUERY.value else None
+        prompt_name = (
+            DocumentTypeEnum.QUERY.value
+            if document_type == DocumentTypeEnum.QUERY.value
+            else None
+        )
 
         embedding = self.embedding_model.encode(
             [text],

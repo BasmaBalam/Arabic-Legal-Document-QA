@@ -1,8 +1,0 @@
-from pydantic import BaseModel, Field
-
-class AskRequest(BaseModel):
-    question: str = Field(
-        ...,
-        min_length=1,
-        description="Legal question in Arabic or English"
-    )

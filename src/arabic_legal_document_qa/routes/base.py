@@ -1,18 +1,53 @@
-from fastapi import FastAPI, APIRouter,Depends
-from ..configs.config import Settings, get_settings
+import logging
 
-base_router = APIRouter(
-    prefix = "/api/v1",
-    tags = ["system"]
+from fastapi import APIRouter, Request, status
+from fastapi.responses import JSONResponse
+
+from arabic_legal_document_qa.controllers.RAGController import RAGController
+from arabic_legal_document_qa.models.enums import ResponseStatus
+from arabic_legal_document_qa.routes.schemes.health import HealthResponse
+
+logger = logging.getLogger(__name__)
+
+base_router = APIRouter(prefix="/api/v1", tags=["system"])
+
+
+@base_router.get(
+    "/health",
+    status_code=status.HTTP_200_OK,
+    summary="Health Check and Collection Stats",
 )
+async def health_check(request: Request):
+    """Check application health and return the indexed document count."""
 
-@base_router.get("/")
-async def welcom(app_settings:Settings = Depends(get_settings)):
+    logger.info("Starting health check")
+    try:
+        rag_controller = RAGController(
+            vectordb_client=request.app.vectordb_client,
+            generation_client=request.app.generation_client,
+            embedding_client=request.app.embedding_client,
+            template_parser=request.app.template_parser,
+        )
 
-    app_name = app_settings.APP_NAME
-    app_version = app_settings.APP_VERSION
+        indexed_count = rag_controller.get_indexed_count()
 
-    return {
-        "App Name": app_name,
-        "App Version": app_version,
-    }
+        health_data = HealthResponse(status="healthy", documents_indexed=indexed_count)
+
+        logger.info(
+            "Health check completed successfully: %d documents indexed", indexed_count
+        )
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={
+                "signal": ResponseStatus.HEALTH_SUCCESS.value,
+                "health_response": health_data.model_dump(),
+            },
+        )
+
+    except Exception as e:
+        logger.error("Health check failed")
+        return JSONResponse(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content={"signal": ResponseStatus.HEALTH_FAILED.value, "detail": str(e)},
+        )

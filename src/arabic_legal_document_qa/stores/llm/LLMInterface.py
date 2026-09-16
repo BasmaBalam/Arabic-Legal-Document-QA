@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-class LLMInterface(ABC):
 
+class LLMInterface(ABC):
     @abstractmethod
     def set_generation_model(self, model_id: str):
         """
@@ -15,10 +15,8 @@ class LLMInterface(ABC):
             Exception: If the embedding model cannot be loaded.
         """
 
-        pass
-
     @abstractmethod
-    def set_embedding_mode(self, model_id: str, embedding_size: int):
+    def set_embedding_model(self, model_id: str, embedding_size: int):
         """
         Load and configure the language generation model.
 
@@ -28,11 +26,15 @@ class LLMInterface(ABC):
         Raises:
             Exception: If the model or tokenizer cannot be loaded.
         """
-        pass
 
     @abstractmethod
-    def generate_text(self, prompt: str, chat_history: list = [], max_output_tokens: int= None,
-                      temp: float = None):
+    def generate_text(
+        self,
+        prompt: str,
+        chat_history: list = [],
+        max_output_tokens: int | None = None,
+        temp: float | None = None,
+    ):
         """
         Generate a text response from the configured language model.
 
@@ -41,10 +43,10 @@ class LLMInterface(ABC):
 
             chat_history: Optional list of previous chat messages. Each
                 message should contain ``role`` and ``content`` keys.
-            
+
             max_output_tokens: Maximum number of new tokens to generate.
                 Uses the provider default when not specified.
-            
+
             temp: Sampling temperature. A value greater than zero enables
                 sampling; zero or ``None`` uses deterministic generation or
                 the configured default temperature.
@@ -53,10 +55,9 @@ class LLMInterface(ABC):
             The generated text, or ``None`` if the generation model has not
             been configured.
         """
-        pass
 
     @abstractmethod
-    def embed_text(self, text: str, document_type: str= None):
+    def embed_text(self, text: str, document_type: str | None = None):
         """
         Generate an embedding vector for the provided text.
 
@@ -69,7 +70,6 @@ class LLMInterface(ABC):
             A normalized embedding vector as a list of floats, or ``None``
             if the embedding model has not been configured.
         """
-        pass
 
     @abstractmethod
     def construct_prompt(self, prompt: str, role: str):
@@ -84,4 +84,3 @@ class LLMInterface(ABC):
         Returns:
             A dictionary containing the message ``role`` and ``content``.
         """
-        pass

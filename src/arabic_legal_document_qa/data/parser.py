@@ -1,37 +1,36 @@
-import os
-import re
 import json
-from pypdf import PdfReader
-from typing import Optional, Tuple, List, Dict, Any
-from arabic_legal_document_qa.configs.config import Settings, get_settings
-
+import re
 from pathlib import Path
+from typing import Any
 
+from pypdf import PdfReader
+
+from arabic_legal_document_qa.configs.config import get_settings
 
 # Project root directory
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 # Input PDF
-pdf_path = (PROJECT_ROOT/ "data"/ "raw"/ "egyptian_civil_code.pdf")
+pdf_path = PROJECT_ROOT / "data" / "raw" / "egyptian_civil_code.pdf"
 # Output JSON
-output_path = (PROJECT_ROOT/ "data"/ "processed"/ "egyptian_civil_code.json")
+output_path = PROJECT_ROOT / "data" / "processed" / "egyptian_civil_code.json"
 
-class LegalTextParser: 
-    """ 
+
+class LegalTextParser:
+    """
     Parser for bilingual legal text extracted from PDFs.
 
-    Handles: 
-    - Arabic and English article numbers 
-    - Arabic-Indic digit conversion 
-    - Repealed article detection 
-    - Article finalization 
-    - Arabic/English bilingual article pairing 
-    - Legal hierarchy tracking 
+    Handles:
+    - Arabic and English article numbers
+    - Arabic-Indic digit conversion
+    - Repealed article detection
+    - Article finalization
+    - Arabic/English bilingual article pairing
+    - Legal hierarchy tracking
     - PDF page parsing
     """
 
     def to_int(self, val_str: str, is_arabic: bool = False) -> int:
-
         """
         Convert Arabic-Indic or Western digits to an integer.
 
@@ -54,9 +53,11 @@ class LegalTextParser:
         Returns:
             The converted integer.
         """
-        
+
         arabic_digits = "٠١٢٣٤٥٦٧٨٩"
-        cleaned_digits = [char for char in val_str if char.isdigit() or char in arabic_digits]
+        cleaned_digits = [
+            char for char in val_str if char.isdigit() or char in arabic_digits
+        ]
 
         if not cleaned_digits:
             return 0
@@ -73,7 +74,7 @@ class LegalTextParser:
 
         return int(digit_str)
 
-    def detect_repealed(self, text: str) -> Tuple[bool, Optional[int], Optional[int]]:
+    def detect_repealed(self, text: str) -> tuple[bool, int | None, int | None]:
         """
         Detect a repeal notice and extract its article range.
 
@@ -93,16 +94,17 @@ class LegalTextParser:
                 - end_article: Last article in the repealed range,
                 or None if no range is found.
         """
-        
+
         is_repealed = any(
-            word.lower() in text.lower()
-            for word in ["ألغيت", "ملغاة", "repealed"]
+            word.lower() in text.lower() for word in ["ألغيت", "ملغاة", "repealed"]
         )
 
         if not is_repealed:
             return False, None, None
 
-        range_match = re.search(r"Articles?\s*(\d+)\s*(?:[-–]|to)\s*(\d+)", text, re.IGNORECASE)
+        range_match = re.search(
+            r"Articles?\s*(\d+)\s*(?:[-–]|to)\s*(\d+)", text, re.IGNORECASE
+        )
 
         if range_match:
             n1 = self.to_int(range_match.group(1), is_arabic=False)
@@ -111,7 +113,8 @@ class LegalTextParser:
             return True, start_num, end_num
 
         return True, None, None
-    def finalize_article(self, art_dict: Dict[str, Any]) -> Dict[str, Any]:
+
+    def finalize_article(self, art_dict: dict[str, Any]) -> dict[str, Any]:
         """
         Convert an active article object into the final JSON structure.
 
@@ -125,7 +128,7 @@ class LegalTextParser:
         Returns:
             A dictionary ready to be stored in the final JSON corpus.
         """
-        
+
         text_ar = " ".join(art_dict["ar_lines"]).strip()
         text_en = " ".join(art_dict["en_lines"]).strip()
 
@@ -143,11 +146,10 @@ class LegalTextParser:
         }
 
     def is_bilingual_completion(
-        self, 
-        current_article: Optional[Dict[str, Any]],
+        self,
+        current_article: dict[str, Any] | None,
         is_arabic_header: bool,
     ) -> bool:
-        
         """
         Determine whether a newly detected article header belongs to
         the other language of the currently active article.
@@ -177,10 +179,9 @@ class LegalTextParser:
         return (has_en and not has_ar) if current_article else (has_ar and not has_en)
 
     def parse_legal_text(
-        self, 
-        pages_data: List[Tuple[int, str]],
-    ) -> List[Dict[str, Any]]:
-        
+        self,
+        pages_data: list[tuple[int, str]],
+    ) -> list[dict[str, Any]]:
         """
         Parse extracted PDF pages into structured legal articles.
 
@@ -219,29 +220,30 @@ class LegalTextParser:
         current_article = None
 
         for page_num, text in pages_data:
-
             lines = [line.strip() for line in text.split("\n") if line.strip()]
             i = 0
             while i < len(lines):
                 line = lines[i]
 
                 is_repealed, start_num, end_num = self.detect_repealed(line)
-                
+
                 if is_repealed:
                     if start_num is not None and end_num is not None:
                         for num in range(start_num, end_num + 1):
-                            articles.append({
-                                "article_number": num,
-                                "book": current_hierarchy["book"],
-                                "chapter": current_hierarchy["chapter"],
-                                "section": current_hierarchy["section"],
-                                "topic": current_hierarchy["topic"],
-                                "text_ar": "",
-                                "text_en": "",
-                                "is_repealed": True,
-                                "source_page": page_num,
-                                "citation": f"Egyptian Civil Code, Article {num}",
-                            })
+                            articles.append(
+                                {
+                                    "article_number": num,
+                                    "book": current_hierarchy["book"],
+                                    "chapter": current_hierarchy["chapter"],
+                                    "section": current_hierarchy["section"],
+                                    "topic": current_hierarchy["topic"],
+                                    "text_ar": "",
+                                    "text_en": "",
+                                    "is_repealed": True,
+                                    "source_page": page_num,
+                                    "citation": f"Egyptian Civil Code, Article {num}",
+                                }
+                            )
                     i += 1
                     continue
 
@@ -276,9 +278,11 @@ class LegalTextParser:
                     if current_article:
                         articles.append(self.finalize_article(current_article))
                         current_article = None
-                    en_topic_match = re.search(r'(\d+\.\s+[A-Za-z].*|[A-Za-z].*)', line)
+                    en_topic_match = re.search(r"(\d+\.\s+[A-Za-z].*|[A-Za-z].*)", line)
                     current_hierarchy["topic"] = (
-                        en_topic_match.group(1).strip() if en_topic_match else line.strip()
+                        en_topic_match.group(1).strip()
+                        if en_topic_match
+                        else line.strip()
                     )
                     i += 1
                     continue
@@ -294,7 +298,10 @@ class LegalTextParser:
                         else self.to_int(en_match.group(1), is_arabic=False)
                     )
 
-                    if current_article and current_article["article_number"] == article_num:
+                    if (
+                        current_article
+                        and current_article["article_number"] == article_num
+                    ):
                         # Same number reported again (continuation / repeated marker).
                         i += 1
                         continue
@@ -302,7 +309,10 @@ class LegalTextParser:
                     if self.is_bilingual_completion(current_article, is_ar_header):
                         # This header completes the article we're already building.
                         # Trust the English (Western-digit) number over the Arabic one.
-                        if not is_ar_header and current_article["article_number"] != article_num:
+                        if (
+                            not is_ar_header
+                            and current_article["article_number"] != article_num
+                        ):
                             current_article["article_number"] = article_num
                         i += 1
                         continue
@@ -339,7 +349,6 @@ class LegalTextParser:
 
 
 if __name__ == "__main__":
-
     parser = LegalTextParser()
     reader = PdfReader(pdf_path)
     settings = get_settings()
@@ -355,8 +364,7 @@ if __name__ == "__main__":
     # but keep repealed articles because their text is intentionally empty.
 
     extracted_articles = [
-        a for a in extracted_articles
-        if a["text_ar"] or a["is_repealed"]
+        a for a in extracted_articles if a["text_ar"] or a["is_repealed"]
     ]
 
     print(f"Successfully extracted {len(extracted_articles)} articles.")
@@ -368,16 +376,23 @@ if __name__ == "__main__":
     # fact rather than stored on each record, so it doesn't change the
     # output schema your downstream embedding/RAGAS steps expect.
     flagged = [
-        a for a in extracted_articles
-        if not a["text_ar"] or not a["text_en"]
-        or a["article_number"] <= 0 or a["article_number"] > settings.MAX_CIVIL_CODE_ARTICLE_NUMBER 
+        a
+        for a in extracted_articles
+        if not a["text_ar"]
+        or not a["text_en"]
+        or a["article_number"] <= 0
+        or a["article_number"] > settings.MAX_CIVIL_CODE_ARTICLE_NUMBER
     ]
-    print(f"{len(flagged)} article(s) flagged for manual review "
-          f"(missing a language, or a number outside 1-{settings.MAX_CIVIL_CODE_ARTICLE_NUMBER }):")
-    
+    print(
+        f"{len(flagged)} article(s) flagged for manual review "
+        f"(missing a language, or a number outside 1-{settings.MAX_CIVIL_CODE_ARTICLE_NUMBER}):"
+    )
+
     for a in flagged[:30]:
-        print(f"  - Article {a['article_number']} (page {a['source_page']}): "
-              f"ar={'yes' if a['text_ar'] else 'no'}, en={'yes' if a['text_en'] else 'no'}")
+        print(
+            f"  - Article {a['article_number']} (page {a['source_page']}): "
+            f"ar={'yes' if a['text_ar'] else 'no'}, en={'yes' if a['text_en'] else 'no'}"
+        )
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(extracted_articles, f, ensure_ascii=False, indent=2)

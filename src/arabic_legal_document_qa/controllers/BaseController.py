@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+
 from arabic_legal_document_qa.configs.config import get_settings
 
 
@@ -7,8 +8,8 @@ class BaseController:
     """Base controller providing application settings and project directories.
     This class serves as the base class for application controllers.
     It initializes the application settings and resolves the project's
-    root directory and data directories. 
-    
+    root directory and data directories.
+
     Attributes:
         app_settings: Application configuration.
         project_root: Root directory of the project.
@@ -23,17 +24,19 @@ class BaseController:
         self.data_dir = self.project_root / "data"
         self.data_processed_dir = self.data_dir / "processed"
 
-        self.database_dir = os.path.join(
-            self.project_root,
-            "assets/database"
-        )
-
+        self.database_dir = os.path.join(self.project_root, "assets/database")
 
     def get_database_path(self, db_name: str):
-        database_path = os.path.join(
-            self.database_dir,
-            db_name
-        )
+        """Get the path to a database directory.
+        If the requested database directory does not exist, it is created.
+
+        Args:
+            db_name: Name of the database directory.
+
+        Returns:
+            The absolute path to the requested database directory.
+        """
+        database_path = os.path.join(self.database_dir, db_name)
 
         if not os.path.exists(database_path):
             os.makedirs(database_path)
