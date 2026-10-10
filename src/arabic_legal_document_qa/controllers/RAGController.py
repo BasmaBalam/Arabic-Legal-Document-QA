@@ -6,12 +6,12 @@ from langchain_core.documents import Document
 from arabic_legal_document_qa.models.db_schemes.legal_query_metadata import (
     LegalQueryMetadata,
 )
-
+from .BaseController import BaseController
 from .DocumentController import DocumentController
 from .VectorDBController import VectorDBController
 
 
-class RAGController:
+class RAGController(BaseController):
     """
     Controller for the Retrieval-Augmented Generation (RAG) pipeline.
     This controller coordinates document processing, vector database indexing,
@@ -44,7 +44,7 @@ class RAGController:
     def __init__(
         self, vectordb_client, embedding_client, generation_client, template_parser
     ):
-
+        super().__init__()
         self.generation_client = generation_client
         self.document_controller = DocumentController()
         self.vectorDB_controller = VectorDBController(vectordb_client, embedding_client)
@@ -170,7 +170,9 @@ class RAGController:
 
         return metadata_filter or None
 
-    def answer(self, question: str, limit: int = 10) -> tuple[str, list[str]] | None:
+    def answer(
+        self, question: str, limit: int = 10
+    ) -> tuple[str, list[str], list[str]] | None:
         """
         Retrieve legal documents and generate an answer to a question.
 
@@ -179,16 +181,20 @@ class RAGController:
             2. Build a metadata filter.
             3. Retrieve relevant documents using vector search and metadata.
             4. Retry vector search without metadata filtering if no documents are found.
-            5. Extract unique citations from the retrieved documents.
-            6. Build the RAG prompt using the retrieved documents.
-            7. Generate the final answer using the generation client.
+            5. Extract the text content from the retrieved documents as contexts.
+            6. Extract unique citations from the retrieved documents.
+            7. Build the RAG prompt using the retrieved documents.
+            8. Generate the final answer using the generation client.
 
         Args:
             question: User's legal question.
             limit: Maximum number of documents to retrieve.
 
         Returns:
-            A tuple containing the generated answer and a list of document citations.
+            A tuple containing:
+            - The generated answer.
+            - A list of unique document citations.
+            - A list of retrieved document texts used as contexts.
             Returns None if no relevant documents are retrieved.
         """
         # Extract metadata from the question
@@ -216,6 +222,7 @@ class RAGController:
         if not retrieved_documents:
             return None
 
+        contexts = [doc.text for doc in retrieved_documents]
         sources = []
         for doc in retrieved_documents:
             meta = doc.metadata or {}
@@ -262,4 +269,4 @@ class RAGController:
             prompt=full_prompt,
         )
 
-        return answer, sources
+        return answer, sources, contexts

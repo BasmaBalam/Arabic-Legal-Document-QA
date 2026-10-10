@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     EMBEDDING_BACKEND: str
 
     COHERE_API_KEY: str
+    GEMINI_API_KEY: str
     GENERATION_MODEL_ID: str
     EMBEDDING_MODEL_ID: str
     EMBEDDING_MODEL_SIZE: int
@@ -19,12 +20,30 @@ class Settings(BaseSettings):
     DEFAULT_GENERATION_TEMPERATURE: float
     ENABLE_THINKING: bool
 
+    QUANTIZED_GENERATION_MODEL_ID: str
+
+    OLLAMA_HOST: str
+    OLLAMA_KEEP_ALIVE: str | int
+
     VECTOR_DB_BACKEND: str
     VECTOR_DB_PATH: str
     VECTOR_DB_DISTANCE_METHOD: str
 
+    EVALUATION_BACKEND: str
+    EVALUATION_MODEL_ID: str
+
+    EVALUATION_EMBEDDING_BACKEND: str
+    EVALUATION_EMBEDDING_MODEL_ID: str
+    EVALUATION_EMBEDDING_MODEL_SIZE: int
+
     PRIMARY_LANG: str
     DEFAULT_LANG: str
+
+    MLFLOW_EXPERIMENT_NAME: str
+    MLFLOW_TRACKING_URI: str
+
+    VLLM_BASE_URL: str
+    VLLM_API_KEY: str
 
     model_config = SettingsConfigDict(
         env_file="src/arabic_legal_document_qa/.env",

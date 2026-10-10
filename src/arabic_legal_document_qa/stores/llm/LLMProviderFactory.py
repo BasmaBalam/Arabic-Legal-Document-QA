@@ -1,5 +1,5 @@
 from .LLMEnums import LLMEnum
-from .providers import CohereProvider, QwenProvider
+from .providers import GeminiProvider, CohereProvider, QwenProvider, OllamaProvider
 
 
 class LLMProviderFactory:
@@ -45,6 +45,30 @@ class LLMProviderFactory:
                 default_input_max_characters=self.config.DEFAULT_INPUT_MAX_CHARACTERS,
                 default_generation_max_output_tokens=self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS,
                 default_generation_temp=self.config.DEFAULT_GENERATION_TEMPERATURE,
+            )
+
+        if provider == LLMEnum.GEMINI.value:
+            return GeminiProvider(
+                api_key=self.config.GEMINI_API_KEY,
+                default_input_max_characters=(self.config.DEFAULT_INPUT_MAX_CHARACTERS),
+                default_generation_max_output_tokens=(
+                    self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS
+                ),
+                default_generation_temp=(self.config.DEFAULT_GENERATION_TEMPERATURE),
+            )
+
+        if provider == LLMEnum.OLLAMA.value:
+            return OllamaProvider(
+                host=self.config.OLLAMA_HOST,
+                default_input_max_characters=(self.config.DEFAULT_INPUT_MAX_CHARACTERS),
+                default_generation_max_output_tokens=(
+                    self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS
+                ),
+                default_generation_temperature=(
+                    self.config.DEFAULT_GENERATION_TEMPERATURE
+                ),
+                enable_thinking=self.config.ENABLE_THINKING,
+                keep_alive=self.config.OLLAMA_KEEP_ALIVE,
             )
 
         return None

@@ -1,0 +1,45 @@
+services:
+  qdrant:
+    image: legal-qa-qdrant:local
+    build:
+      context: ..
+      dockerfile: docker/Qdrant.Dockerfile
+    container_name: legal_qa_qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/readyz"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: legal_qa_app
+    ports:
+      - "8000:8000"
+    environment:
+      - VECTOR_DB_BACKEND=QDRANT
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+
+      - GENERATION_BACKEND=${GENERATION_BACKEND:-OLLAMA}
+      - GENERATION_MODEL_ID=${GENERATION_MODEL_ID:-qwen3:8b}
+      - OLLAMA_HOST=${OLLAMA_HOST:-http://host.docker.internal:11434}
+      - OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE:-10m}
+
+      - EMBEDDING_BACKEND=${EMBEDDING_BACKEND:-QWEN}
+      - EMBEDDING_MODEL_ID=${EMBEDDING_MODEL_ID:-Qwen/Qwen3-Embedding-0.6B}
+      - EMBEDDING_MODEL_SIZE=1024
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  qdrant_data:

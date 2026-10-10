@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 
 from .configs.config import get_settings
 from .configs.logging_config import correlation_id_ctx, setup_logging
-from .routes import ask, base, document
+from .routes import ask, base, document, evaluation
 from .stores.llm.LLMProviderFactory import LLMProviderFactory
 from .stores.llm.templates.template_parser import TemplateParser
 from .stores.vectordb.VectorDBProviderFactory import VectorDBProviderFactory
@@ -27,6 +27,7 @@ async def correlation_id_middleware(request: Request, call_next):
 @app.on_event("startup")
 async def startup_spam():
     settings = get_settings()
+    app.state.settings = settings
     llm_provider_factory = LLMProviderFactory(settings)
     vector_provider_factory = VectorDBProviderFactory(settings)
 
@@ -62,3 +63,4 @@ async def shutdown_spam():
 app.include_router(base.base_router)
 app.include_router(document.document_router)
 app.include_router(ask.ask_router)
+app.include_router(evaluation.evaluation_router)

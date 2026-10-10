@@ -18,3 +18,6 @@ class ResponseStatus(Enum):
 
     ANSWERING_SUCCESS = "answering_success"
     ANSWERING_FAILED = "answering_failed"
+
+    EVALUATION_SUCCESS = "evaluation_success"
+    EVALUATION_FAILED = "evaluation_failed"

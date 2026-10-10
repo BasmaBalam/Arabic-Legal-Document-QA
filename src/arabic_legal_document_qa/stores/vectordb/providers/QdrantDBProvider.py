@@ -12,9 +12,18 @@ from ..VectorDBInterface import VectorDBInterface
 
 
 class QdrantDBProvider(VectorDBInterface):
-    def __init__(self, db_path: str, distance_method: str):
+    def __init__(
+        self,
+        db_path: str,
+        distance_method: str,
+        host: str | None = None,
+        port: int = 6333,
+    ):
+
         self.client = None
         self.db_path = db_path
+        self.host = host
+        self.port = port
 
         distance_map = {
             "Cosine": Distance.COSINE,
@@ -28,8 +37,19 @@ class QdrantDBProvider(VectorDBInterface):
         self.logger = logging.getLogger(__name__)
 
     def connect(self) -> None:
-        """Connect to the local Qdrant database."""
-        self.client = QdrantClient(path=self.db_path)
+        """Connect to Qdrant server or local storage."""
+        if self.host:
+            self.client = QdrantClient(
+                host=self.host,
+                port=self.port,
+            )
+        else:
+            if self.db_path is None:
+                raise ValueError(
+                    "db_path is required when QDRANT_HOST is not configured."
+                )
+
+            self.client = QdrantClient(path=self.db_path)
 
     def disconnect(self) -> None:
         """Disconnect from the Qdrant database."""

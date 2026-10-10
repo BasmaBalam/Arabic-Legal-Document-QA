@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "language": "ar",
+    "question": "ما المقصود بالموطن في القانون المدني، وهل يجوز أن يكون للشخص أكثر من موطن في الوقت نفسه؟",
+    "reference": "(١ (الموطن هو المكان الذي يقيم فيه الشخص عادة . (٢) ويجوز أن يكون للشخص في وقت واحد أكثر من موطن، كما يجوز ألا يكون له موطن ما .",
+    "article_number": 40,
+    "pair_id": 1
+  },
+  {
+    "id": 2,
+    "language": "en",
+    "question": "What is a person's domicile under the Civil Code, and may a person have more than one domicile at the same time?",
+    "reference": "A domicile is the place where a person habitually resides. A person may have more than one domicile at the same time, as he may have none.",
+    "article_number": 40,
+    "pair_id": 1
+  },
+  {
+    "id": 3,
+    "language": "ar",
+    "question": "متى تكون للشخص أهلية كاملة لمباشرة حقوقه المدنية، وما سن الرشد؟",
+    "reference": "(١ (كل شخص بلغ سن الرشد متمتعا بقواه العقلية ، ولم يحجر عليه ، يكون كامل الأهلية لمباشرة حقوقه المدنية . )٢ (وسن الرشد هى إحدى وعشرون سنة ميلادية كاملة .",
+    "article_number": 44,
+    "pair_id": 2
+  },
+  {
+    "id": 4,
+    "language": "en",
+    "question": "When does a person have full legal capacity to exercise civil rights, and what is the age of majority?",
+    "reference": "All persons attaining majority in possession of their mental faculties and not under legal disability, have full legal capacity to exercise their civil rights. The majority of a person is fixed at twenty one years completed in accordance with the Gregorian calendar.",
+    "article_number": 44,
+    "pair_id": 2
+  },
+  {
+    "id": 5,
+    "language": "ar",
+    "question": "ما الذي يجوز للشخص طلبه إذا وقع اعتداء غير مشروع على أحد الحقوق الملازمة لشخصيته؟",
+    "reference": "لكل من وقع عليه اعتداء غير مشروع في حق من الحقوق الملازمة لشخصيته ، أن يطلب وقف هذا الاعتداء مع التعويض عما يكون قد لحقه من ضرر .",
+    "article_number": 50,
+    "pair_id": 3
+  },
+  {
+    "id": 6,
+    "language": "en",
+    "question": "What may a person demand when a right inherent in his personality has been unlawfully infringed?",
+    "reference": "A person whose rights inherent in his personality have been unlawfully infringed, shall have the right to demand the cessation of the infringement and compensation for any damage sustained thereby.",
+    "article_number": 50,
+    "pair_id": 3
+  },
+  {
+    "id": 7,
+    "language": "ar",
+    "question": "متى يجوز للشيء أن يكون محلاً للحقوق المالية، وما الفرق بين الأشياء الخارجة عن التعامل بطبيعتها وتلك الخارجة بحكم القانون؟",
+    "reference": "(١ (كل شيء غير خارج عن التعامل بطبيعته أو بحكم القانون يصح أن يكون محلاً للحقوق المالية . (٢ (الأشياء التي تخرج عن التعامل بطبيعتها هى التي لا يستطيع أحد أن يستأثر بحيازتها ، وأما الخارجة بحكم القانون فهي التي لا يجيز القانون أن تكون محلاً للحقوق المالية .",
+    "article_number": 81,
+    "pair_id": 4
+  },
+  {
+    "id": 8,
+    "language": "en",
+    "question": "When may a thing be the object of proprietary rights, and what is the distinction between things outside the ambit of trade by nature and those outside it by law?",
+    "reference": "Anything that is not outside the ambit of trade by its nature of by virtue of the law, may be the object of proprietary rights. Things outside the ambit of trade by their very nature are things that cannot be objects of exclusive possession. Things outside the ambit of trade by law are things which, in accordance with the law, cannot be objects of proprietary rights.",
+    "article_number": 81,
+    "pair_id": 4
+  },
+  {
+    "id": 9,
+    "language": "ar",
+    "question": "إذا اتفق الطرفان على جميع المسائل الجوهرية في العقد وأجّلا بعض التفاصيل، فمتى يعد العقد منعقداً وكيف تحسم التفاصيل عند النزاع؟",
+    "reference": "إذا اتفق الطرفان على جميع المسائل الجوهرية في العقد ، وإحتفظا بمسائل تفصيلية يتفقان عليها فيما بعد ولم يشترطا أن العقد لا يتم عند عدم الإتفاق عليها، فإن المحكمة تقضي فيها طبقاً لطبيعة المعاملة ولأحكام القانون والعرف والعدالة .",
+    "article_number": 95,
+    "pair_id": 5
+  },
+  {
+    "id": 10,
+    "language": "en",
+    "question": "If the parties agree on all essential points of a contract but defer some details, when is the contract considered concluded and how are the details decided in case of dispute?",
+    "reference": "When the parties have agreed on all the essential points of a contract and have left certain details to be agreed at a later date without stipulating that failing agreement on these details, the contract shall not be concluded, the contract is deemed to have been concluded, and the points of detail will, in the event of dispute, be decided by the court according to the nature of the transaction, to the provisions of the law and to custom and equity.",
+    "article_number": 95,
+    "pair_id": 5
+  },
+  {
+    "id": 11,
+    "language": "ar",
+    "question": "متى ينعقد عقد البيع في المزايدات، ومتى يسقط العطاء؟",
+    "reference": "لا يتم العقد في المزايدات إلا برسو المزاد . ويسقط العطاء بعطاء يزيد عليه ولو كان باطلاً  .",
+    "article_number": 99,
+    "pair_id": 6
+  },
+  {
+    "id": 12,
+    "language": "en",
+    "question": "When is a contract of sale by public auction concluded, and when is a bid nullified?",
+    "reference": "A contract of sale by public auction is only concluded when the final bid is accepted. A bid is nullified from the moment a higher bid is made, even if the higher bid is void.",
+    "article_number": 99,
+    "pair_id": 6
+  },
+  {
+    "id": 13,
+    "language": "ar",
+    "question": "ما الشروط اللازمة لانعقاد الاتفاق الذي يتضمن وعداً بإبرام عقد معين في المستقبل؟",
+    "reference": "(١ (الاتفاق الذي يعد بموجبه كلا المتعاقدين أو أحدهما بابرام عقد معين في المستقبل لا ينعقد، إلا إذا عينت جميع المسائل الجوهرية للعقد المراد إبرامه، والمدة التي يجب إبرامه فيها . (٢ (إذا اشترط القانون ل تمام العقد استيفاء شكل معين، فهذا الشكل تجب مراعاته أيضاً في الاتفاق الذي يتضمن الوعد بإبرام هذا العقد .",
+    "article_number": 101,
+    "pair_id": 7
+  },
+  {
+    "id": 14,
+    "language": "en",
+    "question": "What requirements must be met for an agreement promising to enter into a particular contract in the future to be binding?",
+    "reference": "An agreement by which the two parties, or one of them, promise to enter into a particular contract in the future, is only binding if all the essential points of the contract envisaged and the time when the contract should be concluded are stated. When the law provides that a contract shall not be valid unless a certain form is observed, this form must also be observed in any agreement embodying a promise to enter into such a contract.",
+    "article_number": 101,
+    "pair_id": 7
+  },
+  {
+    "id": 15,
+    "language": "ar",
+    "question": "هل يجوز للشخص أن يتعاقد مع نفسه باسم من ينوب عنه دون ترخيص من الأصيل، وماذا يمكن للأصيل أن يفعل في هذه الحالة؟",
+    "reference": "لا يجوز لشخص أن يتعاقد مع نفسه باسم من ينوب عنه ، سواء أكان التعاقد لحسابه هو أم لحساب شخص آخر دون ترخيص من الأصيل. على انه يجوز للأصيل فى هذه الحالة أن يجيز التعاقد. كل هذا مع مراعاة ما يخالفه ، مما يقضى به القانون أو قواعد التجارة.",
+    "article_number": 108,
+    "pair_id": 8
+  },
+  {
+    "id": 16,
+    "language": "en",
+    "question": "May a person contract with himself in the name of the person he represents without the principal's authority, and what may the principal do in that case?",
+    "reference": "Except where otherwise provided by law or by commercial rules, no one may contract with himself in the name of the person he represents, either for his own benefit or for that of a third party, without the authority of his principal, who, nevertheless, in such a case, may ratify the contract.",
+    "article_number": 108,
+    "pair_id": 8
+  },
+  {
+    "id": 17,
+    "language": "ar",
+    "question": "متى يعتبر الغلط جوهرياً بحيث يؤثر في إبرام العقد؟",
+    "reference": "( ١  (يكون الغلط جوهريا إذا بلغ حدا من الجسامة بحيث يمتنع معه المتعاقد عن إبرام العقد لو لم يقع فى هذا الغلط. ( ٢  (ويعتبر الغلط جوهريا على الأخص: - أ - إذا وقع فى صفة للشئ تكون جوهرية فى إعتبار المتعاقدين. أو يجب اعتبارها كذلك لما يلابس العقد من ظروف ولما ينبغى فى التعامل من حسن نية. ب - إذا وقع فى ذات المتعاقد أو فى صفة من صفاته ، وكانت تلك الذات أو هذه الصفة السبب الرئيس فى التعاقد.",
+    "article_number": 121,
+    "pair_id": 9
+  },
+  {
+    "id": 18,
+    "language": "en",
+    "question": "When is a mistake considered essential so that it affects the conclusion of a contract?",
+    "reference": "A mistake is an essential mistake when its gravity is of such a degree that, if it had not been committed, the party who was mistaken, would not have concluded the contract. The mistake is deemed to be essential more particularly: a) when it has a bearing on the quality of the thing, which the parties have considered essential or which must be deemed essential, taking into consideration the circumstances surrounding the contract and the good faith that should prevail in business relationships. b) when it has a bearing on the identity or on one of the qualities of the person with whom the contract is entered into, if this identity or this quality was the principal factor in the conclusion of the contract.",
+    "article_number": 121,
+    "pair_id": 9
+  },
+  {
+    "id": 19,
+    "language": "ar",
+    "question": "إذا لم يكن محل الالتزام معيناً بذاته، فما الذي يجب تحديده حتى لا يكون العقد باطلاً؟",
+    "reference": "( ١  (إذا لم يكن محل الإلتزام معينا بذاته ، وجب أن يكون معينا بنوعه ومقداره والا كان العقد باطلا. )٢  (ويكفى أن يكون المحل معينا بنوعه فقط إذا تضمن العقد ما يستطاع به تعيين مقداره. وإذا لم يتفق المتعاقدان على درجة الشئ ، من حيث جودته ولم يمكن استخلاص ذلك من العرف أو من أى ظرف آخر ، التزم المدين بأن يسلم شيئا من صنف متوسط.",
+    "article_number": 133,
+    "pair_id": 10
+  },
+  {
+    "id": 20,
+    "language": "en",
+    "question": "If the object of an obligation is not certain as to its nature, what must be determined to avoid the contract being void?",
+    "reference": "When the object of an obligation is not certain as to its nature, it must at least be determinate as to its kind and quantity, as otherwise the contract is void. The object of an obligation may, however, only be determinate as to kind, if the contract provides a method of ascertaining the quantity. If there is no agreement as to the degree of quality and the quality cannot be ascertained by usage or by any other circumstances, the debtor must supply an article of average quality.",
+    "article_number": 133,
+    "pair_id": 10
+  },
+  {
+    "id": 21,
+    "language": "ar",
+    "question": "إذا كان محل الالتزام مبلغاً من النقود، فبأي مقدار يلتزم المدين عند الوفاء رغم تغير قيمة النقود؟",
+    "reference": "إذا كان محل الإلتزام نقودا ، التزم المدين بقدر عددها المذكور فى العقد دون أن يكون لارتفاع قيمة هذه النقود أو لانخفاضها وقت الوفاء أى أثر.",
+    "article_number": 134,
+    "pair_id": 11
+  },
+  {
+    "id": 22,
+    "language": "en",
+    "question": "When the object of an obligation is a sum of money, to what extent is the debtor bound at the time of payment despite changes in the value of the money?",
+    "reference": "When the object of an obligation is a sum of money, the debtor is bound only to the extent of the actual figure of the sum of money stated in the contract, whatever be the increase or decrease in the value of such money at the date of payment.",
+    "article_number": 134,
+    "pair_id": 11
+  },
+  {
+    "id": 23,
+    "language": "ar",
+    "question": "متى يكون العقد باطلاً بسبب مخالفة محل الالتزام للنظام العام أو الآداب؟",
+    "reference": "إذا كان محل الإلتزام مخالفا للنظام العام أو الآداب كان العقد باطلا. السبب Consideration:",
+    "article_number": 135,
+    "pair_id": 12
+  },
+  {
+    "id": 24,
+    "language": "en",
+    "question": "When is a contract void because the object of the obligation is contrary to public policy or morality?",
+    "reference": "A contract is void if its object is contrary to public policy or morality.",
+    "article_number": 135,
+    "pair_id": 12
+  },
+  {
+    "id": 25,
+    "language": "ar",
+    "question": "ما القاعدة التي تحكم إمكانية نقض العقد أو تعديله، ومتى يجوز للقاضي رد الالتزام المرهق إلى الحد المعقول؟",
+    "reference": "( ١  (العقد شريعة المتعاقدين ، فلا يجوز نقضه ولا تعديله إلا باتفاق الطرفين ، أو للأسباب التى يقررها القانون. ( ٢  (ومع ذلك إذا طرأت حوادث استثنائية عامة لم يكن فى الوسع توقعها وترتب على حدوثها أن تنفيذ الإلتزام التعاقدى ، وان لم يصبح مستحيلا ، صار مرهقا للمدين بحيث يهدده بخسارة فادحة ، جاز للقاضى تبعا للظروف وسد الموازنة بين مصلحة الطرفين أن يرد الإلتزام المرهق إلى الحد المعقول. ويقع باطلا كل اتفاق على خلاف ذلك.",
+    "article_number": 147,
+    "pair_id": 13
+  },
+  {
+    "id": 26,
+    "language": "en",
+    "question": "What rule governs the revocation or alteration of a contract, and when may the judge reduce an excessively onerous obligation to reasonable limits?",
+    "reference": "The contract makes the law of the parties. It can be revoked or altered only by mutual consent of the parties or for reasons provided for by law. When, however, as a result of exceptional and unpredictable events of a general character, the performance of the contractual obligation, without becoming impossible, becomes excessively onerous in such way as to threaten the debtor with exorbitant loss, the judge may according to the circumstances, and after taking into consideration the interests of both parties, reduce to reasonable limits, the obligation that has become excessive. Any agreement to the contrary is void.",
+    "article_number": 147,
+    "pair_id": 13
+  },
+  {
+    "id": 27,
+    "language": "ar",
+    "question": "كيف يجب تنفيذ العقد، وما الذي قد يلتزم به المتعاقد بالإضافة إلى الشروط الصريحة الواردة فيه؟",
+    "reference": "( ١  (يجب تنفيذ العقد طبقا لما اشتمل عليه وبطريقة تتفق مع ما يوجبه حسن النية. ( ٢  (ولا يقتصر العقد على إلزام المتعاقد بما ورد فيه. ولكن يتناول أيضا ما هو من مستلزماته ، وفقا للقانون والعرف والعدالة بحسب طبيعة الإلتزام.",
+    "article_number": 148,
+    "pair_id": 14
+  },
+  {
+    "id": 28,
+    "language": "en",
+    "question": "How must a contract be performed, and what may bind a contracting party in addition to its express conditions?",
+    "reference": "A contract must be performed in accordance with its contents and in compliance with the requirements of good faith. A contract binds the contracting party not only as regards its expressed conditions, but also as regards everything which, according to law, usage and equity, is deemed, in view of the nature of the obligation, to be a necessary sequel to the contract.",
+    "article_number": 148,
+    "pair_id": 14
+  },
+  {
+    "id": 29,
+    "language": "ar",
+    "question": "كيف يفسر العقد عندما تكون عبارته واضحة، وكيف يكون التفسير عند وجود محل للتفسير؟",
+    "reference": "( ١  (إذا كانت عبارة العقد واضحة ، فلا يجوز الانحراف عنها من طريق تفسيرها للتعرف على إرادة المتعاقدين. ( ٢  (اما إذا كان هناك محل لتفسير العقد ، فيجب البحث عن النية المشتركة للمتعاقدين دون الوقوف عند المعنى الحرفى للألفاظ ، مع الاستهداء فى ذلك بطبيعة التعامل ، وبما ينبغى أن يتوافر من أمانة وثقة بين المتعاقدين. وفقا للعرف الجارى فى المعاملات.",
+    "article_number": 150,
+    "pair_id": 15
+  },
+  {
+    "id": 30,
+    "language": "en",
+    "question": "How is a contract construed when its wording is clear, and how should it be construed when interpretation is required?",
+    "reference": "When the wording of a contract is clear, it cannot be deviated from in order to ascertain by means of interpretation the intention of the parties. When a contract has to be construed, it is necessary to ascertain the common intention of the parties and to go beyond the literal meaning of the words, taking into account the nature of the transaction as well as that loyalty and confidence which should exist between the parties in accordance with commercial usage.",
+    "article_number": 150,
+    "pair_id": 15
+  },
+  {
+    "id": 31,
+    "language": "ar",
+    "question": "في العقد الملزم للجانبين، ماذا يجوز للطرف الآخر أن يطلب إذا لم ينفذ أحد المتعاقدين التزامه بعد إعذاره؟",
+    "reference": "( ١  (فى العقود الملزمة للجانبين ، إذا لم يوف أحد المتعاقدين بإلتزامه جاز للمتعاقد الآخر بعد اعذاره المدين أن يطالب بتنفيذ العقد أو بفسخه ، مع التعويض فى الهالتين أن كان له مقتض. ( ٢  (ويجوز للقاضى أن يمنح المدين اجلا إذا اقتضت الظروف ذلك ، كما يجوز له أن يرفض الفسخ إذا كان ما لم يرف به المدين قليل الأهمية بالنسبة إلى الإلتزام فى جملته.",
+    "article_number": 157,
+    "pair_id": 16
+  },
+  {
+    "id": 32,
+    "language": "en",
+    "question": "In a bilateral contract, what may the other party demand when one contracting party fails to perform his obligation after being formally summoned?",
+    "reference": "In bilateral contracts (contrats synallagmatiques) if one of the parties does not perform his obligation, the other party may, after serving a formal summons on the debtor, demand the performance of the contract or its rescission, with damages, if due, in either case. The judge may grant additional time to the debtor, if it is necessary as a result of the circumstances. The judge may also reject an application for rescission when the part of the contract which the debtor has failed to perform is of little importance in comparison with the obligation in its entirety.",
+    "article_number": 157,
+    "pair_id": 16
+  },
+  {
+    "id": 33,
+    "language": "ar",
+    "question": "من يتحمل المسؤولية عن الضرر الذي يحدثه الحيوان، ومتى يمكنه التخلص من هذه المسؤولية؟",
+    "reference": "حارس الحيوان ، ولو لم يكن مالكا له ، مسئول عما يحدثه الحيوان من ضرر ، ولو ضل الحيوان أو تسرب ، ما لم يثبت الحارس أن وقوع الحادث كان بسبب أجنبى لا يد له فيه.",
+    "article_number": 176,
+    "pair_id": 17
+  },
+  {
+    "id": 34,
+    "language": "en",
+    "question": "Who is liable for harm caused by an animal, and when may that person avoid liability?",
+    "reference": "A person in charge of an animal, even if he is not its owner, is liable for any harm done by the animal, even if the animal strays or escapes, unless such person shows that the accident was due to a cause beyond his control.",
+    "article_number": 176,
+    "pair_id": 17
+  },
+  {
+    "id": 35,
+    "language": "ar",
+    "question": "متى يجوز إجبار المدين على التنفيذ العيني، ومتى يمكنه الاكتفاء بتعويض نقدي؟",
+    "reference": ") ١  (يجبر المدين بعد اعذاره طبقا للمادتين ٩١٢ ، ٠٢٢ على تنفيذ إلتزامه تنفيذا عينيا ، متى كان ذلك ممكنا. )٢  (على انه إذا كان فى التنفيذ العينى إرهاق للمدين جاز له أن يقتصر على دفع تعويض نقدى ، إذا كان ذلك لا يلحق بالدائن ضررا جسيما.",
+    "article_number": 203,
+    "pair_id": 18
+  },
+  {
+    "id": 36,
+    "language": "en",
+    "question": "When may a debtor be compelled to specifically perform an obligation, and when may he limit performance to monetary indemnity?",
+    "reference": "A debtor shall be compelled, upon being summoned to do so in accordance with Articles 219 and 220, specifically to perform his obligation, if such performance is possible. When, however, specific performance is too onerous for the debtor, he may limit performance to payment of a sum of money as indemnity, provided that this method of performance does not seriously prejudice the creditor.",
+    "article_number": 203,
+    "pair_id": 18
+  },
+  {
+    "id": 37,
+    "language": "ar",
+    "question": "ما أثر الغش الذي يهدف فقط إلى تفضيل دائن على آخر، وماذا يكون أثر وفاء المدين المعسر لأحد دائنيه في بعض الحالات؟",
+    "reference": "(١ (إذا لم يقصد بالغش إلا تفضيل دائن علي آخر دون حق فلا يترتب عليه إلا حرمان الدائن من هذه الميزة. (٢ (وإذا وفي المدين المعسر أحد دائنيه قبل انقضاء الأجل الذي عين أصلا للوفاء، فلا يسري هذا الوفاء في حق باقي الدائنين وكذلك لا يسري في حقهم الوفاء ولو حصل بعد انقضاء هذا الأجل إذا كان قد تم نتيجة تواطؤ بين المدين والدائن الذي استوفي حقه.",
+    "article_number": 242,
+    "pair_id": 19
+  },
+  {
+    "id": 38,
+    "language": "en",
+    "question": "What is the effect of fraud intended solely to give one creditor an unjustified preference, and what is the effect of certain payments by an insolvent debtor to one creditor?",
+    "reference": "Fraud which consists solely of giving a creditor an unjustified preference over another creditor only entails the loss of that advantage by the creditor who was given the unjustified preference. If an insolvent debtor pays off one of his creditors before the date originally fixed for payment, the payment is not valid as against the other creditors, neither is a payment, made after the date fixed for payment, valid as against the other creditors if made as a result of a fraudulent arrangement between the debtor and the creditor so paid off.",
+    "article_number": 242,
+    "pair_id": 19
+  },
+  {
+    "id": 39,
+    "language": "ar",
+    "question": "متى يصبح الالتزام المعلق على شرط واقف قابلاً للتنفيذ، وما الذي يجوز للدائن فعله قبل تحقق الشرط؟",
+    "reference": "إذا كان الا لتزام معلقا على شرط واقف ، فلا يكون نافذا إلا إذا تحقق الشرط  .أما قبل تحقق الشرط ، فلا يكون الالتزام قابلا للتنفيذ القهري ولا للتنفيذ الاختياري ، على أنه يجوز للدائن أن يتخذ من الإجراءات ما يحافظ به على حقه.",
+    "article_number": 268,
+    "pair_id": 20
+  },
+  {
+    "id": 40,
+    "language": "en",
+    "question": "When does an obligation subject to a suspensive condition become executory, and what may the creditor do before the condition is realized?",
+    "reference": "When an obligation depends on a suspensive condition, it does not become executory until the condition is realized. Before realization of the condition, such obligation is not subject to compulsory or to voluntary performance. A creditor may, however, take protective measures to safeguard his rights.",
+    "article_number": 268,
+    "pair_id": 20
+  },
+  {
+    "id": 41,
+    "language": "ar",
+    "question": "هل يجوز لأي من الدائنين المتضامنين مطالبة المدين بالوفاء منفرداً، وما الدفوع التي يجوز للمدين التمسك بها؟",
+    "reference": "(١ (يجوز للدائنين المتضامنين ، مجتمعين أو منفردين ، مطالبة المدين بالوفاء ، ويراعي في ذلك ما يلحق رابطة كل دائن من وصف يعدل من أثر الدين. (٢ (ولا يجوز للمدين إذا طالبه أحد الدائنين المتضامنين بالوفاء أن يحتج على هذا الدائن بأوجه الدفع الخاصة بغيره من الدائنين ، ولكن يجوز له أن يحتج على الدائن المطالب بأوجه الدفع الخاصة بهذا الدائن ، وبأوجه الدفع المشتركة بين الدائنين جميعا.",
+    "article_number": 281,
+    "pair_id": 21
+  },
+  {
+    "id": 42,
+    "language": "en",
+    "question": "May any joint and several creditor sue the debtor alone for performance, and which defenses may the debtor invoke?",
+    "reference": "Joint and several creditors may take proceedings jointly or severally against the debtor for the performance of the obligation. In so doing, the conditions modifying the effect of the obligation as between each creditor and the debtor should be taken into account. A debtor cannot, if he is sued for payment by one of his joint and several creditors, set up as a defence against that creditor, defenses that are personal as regards the other creditors, but he may set up defenses which are personal to the creditor suing him and those which are common to all the creditors.",
+    "article_number": 281,
+    "pair_id": 21
+  },
+  {
+    "id": 43,
+    "language": "ar",
+    "question": "ما الذي يضمنه المحيل عند الحوالة بعوض، وما وضع الضمان عند الحوالة بغير عوض؟",
+    "reference": "(١ (إذا كانت الحوالة بعوض فلا يضمن المحيل إلا وجود الحق المحال به وقت الحوالة ، ما لم يوجد اتفاق يقضي بغير ذلك. (٢ (أما إذا كا نت الحوالة بغير عوض ، فلا يكون المحيل ضامنا حتى لوجود الحق.",
+    "article_number": 308,
+    "pair_id": 22
+  },
+  {
+    "id": 44,
+    "language": "en",
+    "question": "What does the assignor warrant in an assignment for valuable consideration, and what is the warranty position in an assignment without valuable consideration?",
+    "reference": "In the case of an assignment for valuable consideration, the assignor, in the absence of an agreement to the contrary, only warrants the existence of the right assigned at the moment of the assignment. When, however, the assignment is not for valuable consideration, the assignor does not even warrant the existence of the right.",
+    "article_number": 308,
+    "pair_id": 22
+  },
+  {
+    "id": 45,
+    "language": "ar",
+    "question": "ما مدى صحة التزام المدين الجديد تجاه الدائن إذا كان التزامه تجاه المدين الأصلي باطلاً أو قابلاً للدفع؟",
+    "reference": "يكون الالتزام المناب قبل المناب لديه صحيحا ولو كان التزامه قبل المنيب باطلا أو كان هذا الالتزام خاضعا لدفع من الدفوع ، ولا يبقي للمناب إلا حق الرجوع على المنيب ، كل هذا ما لم يوجد اتفاق يقضي بغيره.",
+    "article_number": 361,
+    "pair_id": 23
+  },
+  {
+    "id": 46,
+    "language": "en",
+    "question": "How is the obligation of a new debtor toward the creditor affected when the new debtor's obligation toward the original debtor is void or liable to be contested?",
+    "reference": "In the absence of an agreement to the contrary, the obligation of the new debtor towards the creditor is valid even if his obligation towards the original debtor is void or liable to be contested, subject to the new debtor's right of recourse against the original debtor.",
+    "article_number": 361,
+    "pair_id": 23
+  },
+  {
+    "id": 47,
+    "language": "ar",
+    "question": "ما المقصود بعقد البيع وفقاً للقانون المدني؟",
+    "reference": "البيع عقد يلتزم بع البائع أن ينقل للمشتري ملكية شيء أو حقا ماليا أخر في مقابل ثمن نقدي .",
+    "article_number": 418,
+    "pair_id": 24
+  },
+  {
+    "id": 48,
+    "language": "en",
+    "question": "What is a sale contract under the Civil Code?",
+    "reference": "Sale is a contract whereby the vendor binds himself to transfer to the purchaser the ownership of a thing or any other propriety right in consideration of a price in money.",
+    "article_number": 418,
+    "pair_id": 24
+  },
+  {
+    "id": 49,
+    "language": "ar",
+    "question": "ما المقصود بعقد الإيجار وفقاً للقانون المدني؟",
+    "reference": "الإيجار عقد يلتزم المؤجر بمقتضاه أن يمكن المستأجر من الانتفاع بشيء معين مدة معينة لقاء أجر معلوم.",
+    "article_number": 558,
+    "pair_id": 25
+  },
+  {
+    "id": 50,
+    "language": "en",
+    "question": "What is a lease contract under the Civil Code?",
+    "reference": "A lease is a contract by which the lessor undertakes to enable the lessee to enjoy a specific thing for a certain time in return of a fixed rent.",
+    "article_number": 558,
+    "pair_id": 25
+  }
+]

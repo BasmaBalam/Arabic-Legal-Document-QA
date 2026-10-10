@@ -26,7 +26,7 @@ def ask(request: Request, ask_request: AskRequest):
         template_parser=request.app.template_parser,
     )
 
-    answer, sources = rag_controller.answer(
+    answer, sources, contexts = rag_controller.answer(
         question=ask_request.question, limit=ask_request.limit
     )
 
