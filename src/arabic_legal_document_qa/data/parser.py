@@ -1,11 +1,10 @@
 import json
 import re
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 from pypdf import PdfReader
-
-from arabic_legal_document_qa.configs.config import get_settings
 
 # Project root directory
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
@@ -14,6 +13,12 @@ PROJECT_ROOT = Path(__file__).resolve().parents[3]
 pdf_path = PROJECT_ROOT / "data" / "raw" / "egyptian_civil_code.pdf"
 # Output JSON
 output_path = PROJECT_ROOT / "data" / "processed" / "egyptian_civil_code.json"
+
+
+@dataclass(frozen=True)
+class ParserSettings:
+    MAX_CIVIL_CODE_ARTICLE_NUMBER: int = 1149
+    MAX_CHAR_LENGTH_THRESHOLD: int = 20000
 
 
 class LegalTextParser:
@@ -351,7 +356,7 @@ class LegalTextParser:
 if __name__ == "__main__":
     parser = LegalTextParser()
     reader = PdfReader(pdf_path)
-    settings = get_settings()
+    settings = ParserSettings()
     pages_data = []
 
     for page_number, page in enumerate(reader.pages, start=1):

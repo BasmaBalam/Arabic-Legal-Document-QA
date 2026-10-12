@@ -12,8 +12,8 @@ stages:
       isexec: true
     - path: src/arabic_legal_document_qa/data/parser.py
       hash: md5
-      md5: 8a8f4ddb0da84b0d592cb9f6daf11271
-      size: 14794
+      md5: 245325d1da53a6a3cedd6a40917c3459
+      size: 14906
       isexec: true
     outs:
     - path: data/processed/egyptian_civil_code.json
