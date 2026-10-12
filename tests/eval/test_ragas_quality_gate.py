@@ -80,9 +80,9 @@ def test_ragas_faithfulness_gate(rag_controller):
         answers.append(answer)
         contexts.append(retrieved_contexts)
 
-    assert (
-        len(questions) == 20
-    ), f"Expected 20 evaluated questions, got {len(questions)}"
+    assert len(questions) == 20, (
+        f"Expected 20 evaluated questions, got {len(questions)}"
+    )
 
     eval_dataset = Dataset.from_dict(
         {
