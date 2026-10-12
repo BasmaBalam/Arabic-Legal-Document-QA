@@ -15,6 +15,11 @@ COPY pyproject.toml README.md ./
 COPY src/ src/
 COPY data/ data/
 
+# Increase UV timeout for heavy packages (PyTorch, transformers)
+ENV UV_HTTP_TIMEOUT=120
+ENV UV_CONCURRENT_DOWNLOADS=4
+
+# Install dependencies into system Python environment with expanded timeout
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv pip install --system -e .
 

@@ -1,7 +1,11 @@
 import json
-import mlflow
 import logging
 from typing import Any
+
+import mlflow
+from ragas import EvaluationDataset, evaluate
+from ragas.evaluation import EvaluationResult
+from ragas.llms import LangchainLLMWrapper
 from ragas.metrics import (
     AspectCritic,
     Faithfulness,
@@ -10,11 +14,10 @@ from ragas.metrics import (
     ResponseRelevancy,
 )
 from ragas.run_config import RunConfig
-from ragas.llms import LangchainLLMWrapper
-from .BaseController import BaseController
-from ragas.evaluation import EvaluationResult
-from ragas import EvaluationDataset, SingleTurnSample, evaluate
+
 from arabic_legal_document_qa.models.db_schemes import RAGEvaluationCase
+
+from .BaseController import BaseController
 
 logger = logging.getLogger(__name__)
 
@@ -196,7 +199,7 @@ class EvaluationController(BaseController):
             question = item["question"]
             reference = item["reference"]
 
-            answer, sources, contexts = self.rag_controller.answer(question=question)
+            answer, _sources, contexts = self.rag_controller.answer(question=question)
 
             if answer is None:
                 logger.warning("No RAG result returned for evaluation question.")
@@ -207,7 +210,7 @@ class EvaluationController(BaseController):
                 user_input=item["question"],
                 retrieved_contexts=contexts,
                 response=answer,
-                reference=item["reference"],
+                reference=reference,
                 slice=item["slice"],
                 source_revision=item["source_revision"],
             )
@@ -364,7 +367,6 @@ class EvaluationController(BaseController):
         results_df = results.to_pandas()
 
         with mlflow.start_run():
-
             mlflow.set_tags(
                 {
                     "stage": "baseline",

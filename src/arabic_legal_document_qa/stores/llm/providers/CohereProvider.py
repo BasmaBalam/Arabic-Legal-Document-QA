@@ -35,7 +35,7 @@ class CohereProvider(LLMInterface):
     def __init__(
         self,
         api_key: str,
-        api_url: str = None,
+        api_url: str | None = None,
         default_input_max_characters: int = 1000,
         default_generation_max_output_tokens: int = 1000,
         default_generation_temp: float = 0.1,
@@ -105,7 +105,6 @@ class CohereProvider(LLMInterface):
             Cohere client or generation model has not been configured.
         """
         if not self.client:
-
             self.logger.error("Cohere client was not set")
             return None
 

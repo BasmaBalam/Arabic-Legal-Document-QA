@@ -45,9 +45,9 @@ async def health_check(request: Request):
             },
         )
 
-    except Exception as e:
-        logger.error("Health check failed")
+    except Exception:
+        logger.exception("Health check failed")
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            content={"signal": ResponseStatus.HEALTH_FAILED.value, "detail": str(e)},
+            content={"signal": ResponseStatus.HEALTH_FAILED.value},
         )

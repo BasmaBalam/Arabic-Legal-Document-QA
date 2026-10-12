@@ -75,7 +75,7 @@ def test_ragas_faithfulness_gate(rag_controller):
         if result is None:
             continue
 
-        answer, sources, retrieved_contexts = result
+        answer, _sources, retrieved_contexts = result
         questions.append(q)
         answers.append(answer)
         contexts.append(retrieved_contexts)

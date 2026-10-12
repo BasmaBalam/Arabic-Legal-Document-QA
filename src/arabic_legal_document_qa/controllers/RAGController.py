@@ -6,6 +6,7 @@ from langchain_core.documents import Document
 from arabic_legal_document_qa.models.db_schemes.legal_query_metadata import (
     LegalQueryMetadata,
 )
+
 from .BaseController import BaseController
 from .DocumentController import DocumentController
 from .VectorDBController import VectorDBController

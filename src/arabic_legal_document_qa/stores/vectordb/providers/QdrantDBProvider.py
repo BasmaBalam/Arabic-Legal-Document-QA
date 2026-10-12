@@ -175,8 +175,8 @@ class QdrantDBProvider(VectorDBInterface):
                     )
                 ],
             )
-        except Exception as e:
-            self.logger.error(f"Error while inserting record {e}")
+        except Exception:
+            self.logger.exception("Error while inserting record")
             return False
 
         return True
@@ -231,8 +231,8 @@ class QdrantDBProvider(VectorDBInterface):
                 self.client.upsert(
                     collection_name=collection_name, points=batch_records
                 )
-            except Exception as e:
-                self.logger.error(f"Error while inserting batch {e}")
+            except Exception:
+                self.logger.exception("Error while inserting batch")
                 return False
 
         return True

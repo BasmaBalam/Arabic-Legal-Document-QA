@@ -37,7 +37,7 @@ class QwenProvider(LLMInterface):
 
     def __init__(
         self,
-        device: str = None,
+        device: str | None = None,
         default_input_max_characters: int = 3000,
         default_generation_max_output_tokens: int = 1024,
         default_generation_temperature: float = 0.3,

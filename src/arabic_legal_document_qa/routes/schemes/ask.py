@@ -16,7 +16,6 @@ class AskRequest(BaseModel):
     def question_not_blank(cls, value: str) -> str:
         stripped = value.strip()
         if not stripped:
-
             # min_length=1 alone lets a whitespace-only string ("   ") through —
             # this catches that case too, so both "" and "   " return 422.
             raise ValueError("question must not be empty or whitespace-only")

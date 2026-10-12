@@ -2,7 +2,6 @@ from pydantic import BaseModel, Field
 
 
 class EvaluationRequest(BaseModel):
-
     chunk_size: int = Field(
         default=1000, description="Character size for chunking documents", gt=0
     )

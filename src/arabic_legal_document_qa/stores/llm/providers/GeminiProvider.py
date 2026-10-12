@@ -3,7 +3,7 @@ import logging
 from google import genai
 from google.genai import types
 
-from ..LLMEnums import GeminiEnums, DocumentTypeEnum
+from ..LLMEnums import DocumentTypeEnum, GeminiEnums
 from ..LLMInterface import LLMInterface
 
 
@@ -38,7 +38,7 @@ class GeminiProvider(LLMInterface):
     def __init__(
         self,
         api_key: str,
-        api_url: str = None,
+        api_url: str | None = None,
         default_input_max_characters: int = 1000,
         default_generation_max_output_tokens: int = 1000,
         default_generation_temp: float = 0.1,
@@ -147,11 +147,8 @@ class GeminiProvider(LLMInterface):
 
             return response.text
 
-        except Exception as e:
-            self.logger.error(
-                "Error while generating text with Gemini: %s",
-                e,
-            )
+        except Exception:
+            self.logger.exception("Error while generating text with Gemini")
             return None
 
     def embed_text(
@@ -203,11 +200,8 @@ class GeminiProvider(LLMInterface):
 
             return response.embeddings[0].values
 
-        except Exception as e:
-            self.logger.error(
-                "Error while embedding text with Gemini: %s",
-                e,
-            )
+        except Exception:
+            self.logger.exception("Error while embedding text with Gemini")
             return None
 
     def construct_prompt(self, prompt: str, role: str) -> dict:

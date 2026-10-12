@@ -1,6 +1,6 @@
 from .CohereProvider import CohereProvider
-from .QwenProvider import QwenProvider
 from .GeminiProvider import GeminiProvider
 from .OllamaProvider import OllamaProvider
+from .QwenProvider import QwenProvider
 
-__all__ = ["CohereProvider", "QwenProvider", "GeminiProvider", "OllamaProvider"]
+__all__ = ["CohereProvider", "GeminiProvider", "OllamaProvider", "QwenProvider"]

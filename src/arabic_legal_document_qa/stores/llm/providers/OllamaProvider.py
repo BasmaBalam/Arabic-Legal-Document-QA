@@ -2,7 +2,6 @@ import logging
 
 import ollama
 
-from ..LLMEnums import DocumentTypeEnum
 from ..LLMInterface import LLMInterface
 
 logger = logging.getLogger(__name__)
@@ -190,7 +189,7 @@ class OllamaProvider(LLMInterface):
 
         if self.generation_model_id is None:
             logger.error(
-                "Generation model was not set. " "Call set_generation_model first."
+                "Generation model was not set. Call set_generation_model first."
             )
             return None
 
@@ -257,9 +256,7 @@ class OllamaProvider(LLMInterface):
         """
 
         if self.embedding_model_id is None:
-            logger.error(
-                "Embedding model was not set. " "Call set_embedding_model first."
-            )
+            logger.error("Embedding model was not set. Call set_embedding_model first.")
             return None
 
         text = self.process_text(text)

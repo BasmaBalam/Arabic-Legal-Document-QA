@@ -1,13 +1,15 @@
 import logging
+
 from fastapi import APIRouter, Request, status
 from fastapi.responses import JSONResponse
-from arabic_legal_document_qa.models.enums import ResponseStatus
-from arabic_legal_document_qa.controllers.RAGController import RAGController
 from langchain_ollama import ChatOllama, OllamaEmbeddings
-from arabic_legal_document_qa.routes.schemes.evaluation import EvaluationRequest
+
 from arabic_legal_document_qa.controllers.EvaluationController import (
     EvaluationController,
 )
+from arabic_legal_document_qa.controllers.RAGController import RAGController
+from arabic_legal_document_qa.models.enums import ResponseStatus
+from arabic_legal_document_qa.routes.schemes.evaluation import EvaluationRequest
 
 logger = logging.getLogger(__name__)
 
@@ -89,7 +91,7 @@ def run_evaluation(request: Request, evaluation_request: EvaluationRequest):
             }
         )
 
-    except Exception as exc:
+    except Exception:
         logger.exception("Failed to run RAGAS evaluation")
         return JSONResponse(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

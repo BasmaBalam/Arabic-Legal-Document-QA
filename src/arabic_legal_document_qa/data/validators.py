@@ -38,8 +38,9 @@ if __name__ == "__main__":
     )
 
     missing_seq = sorted(
-        list(set(range(1, settings.MAX_CIVIL_CODE_ARTICLE_NUMBER + 1)) - set(numbers))
+        set(range(1, settings.MAX_CIVIL_CODE_ARTICLE_NUMBER + 1)) - set(numbers)
     )
+
     if missing_seq:
         print(
             f"Sequence Gaps Detected ({len(missing_seq)} missing): {missing_seq[:15]}..."
