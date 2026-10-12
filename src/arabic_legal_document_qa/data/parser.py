@@ -399,5 +399,7 @@ if __name__ == "__main__":
             f"ar={'yes' if a['text_ar'] else 'no'}, en={'yes' if a['text_en'] else 'no'}"
         )
 
+    Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(extracted_articles, f, ensure_ascii=False, indent=2)
