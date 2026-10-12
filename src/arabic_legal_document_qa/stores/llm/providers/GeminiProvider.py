@@ -43,7 +43,6 @@ class GeminiProvider(LLMInterface):
         default_generation_max_output_tokens: int = 1000,
         default_generation_temp: float = 0.1,
     ):
-
         self.api_key = api_key
         self.api_url = api_url
         self.default_input_max_characters = default_input_max_characters

@@ -19,7 +19,6 @@ class QdrantDBProvider(VectorDBInterface):
         host: str | None = None,
         port: int = 6333,
     ):
-
         self.client = None
         self.db_path = db_path
         self.host = host
