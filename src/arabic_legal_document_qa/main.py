@@ -42,9 +42,7 @@ async def startup_spam():
         else settings.GENERATION_MODEL_ID
     )
 
-    app.generation_client.set_generation_model(
-        model_id=generation_model_id
-    )
+    app.generation_client.set_generation_model(model_id=generation_model_id)
 
     # embedding client
     app.embedding_client = llm_provider_factory.create(

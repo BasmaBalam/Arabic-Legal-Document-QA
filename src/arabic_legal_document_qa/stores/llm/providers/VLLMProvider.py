@@ -19,6 +19,7 @@ class VLLMProvider:
 
         temperature: Default temperature used during text generation.
     """
+
     def __init__(
         self,
         base_url: str,
@@ -87,9 +88,7 @@ class VLLMProvider:
             model=self.model_id,
             messages=messages,
             max_tokens=(
-                max_output_tokens
-                if max_output_tokens is not None
-                else self.max_tokens
+                max_output_tokens if max_output_tokens is not None else self.max_tokens
             ),
             temperature=temp if temp is not None else self.temperature,
         )

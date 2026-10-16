@@ -1,5 +1,11 @@
 from .LLMEnums import LLMEnum
-from .providers import CohereProvider, GeminiProvider, OllamaProvider, QwenProvider, VLLMProvider
+from .providers import (
+    CohereProvider,
+    GeminiProvider,
+    OllamaProvider,
+    QwenProvider,
+    VLLMProvider,
+)
 
 
 class LLMProviderFactory:
