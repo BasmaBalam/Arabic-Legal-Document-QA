@@ -6,6 +6,7 @@ class LLMEnum(Enum):
     COHERE = "COHERE"
     GEMINI = "GEMINI"
     OLLAMA = "OLLAMA"
+    VLLM = "VLLM"
 
 
 class CohereEnums(Enum):

@@ -44,6 +44,7 @@ class Settings(BaseSettings):
 
     VLLM_BASE_URL: str
     VLLM_API_KEY: str
+    VLLM_MODEL_ID: str
 
     model_config = SettingsConfigDict(
         env_file="src/arabic_legal_document_qa/.env",

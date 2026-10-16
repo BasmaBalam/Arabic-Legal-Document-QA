@@ -45,7 +45,8 @@ The system is a legal information retrieval and question-answering tool, not a r
 ✅ Legal Citation Retrieval  
 ✅ Article-Aware Document Chunking  
 ✅ Multilingual Text Embeddings  
-✅ Multiple LLM Providers (Cohere, Gemini, Ollama & Qwen)  
+✅ Multiple LLM Providers (Ollama, vLLM, Cohere, Gemini & Qwen) 
+✅ OpenAI-Compatible API Integration for vLLM
 ✅ RAG Evaluation with RAGAS  
 ✅ Faithfulness & Response Relevancy Evaluation  
 ✅ Citation Correctness & Harmful Legal Advice Checks  
@@ -162,12 +163,20 @@ If `data/processed/egyptian_civil_code.json` does not exist when the API first n
 
 ## 🛠️ Tech Stack
 
+[![FastAPI](https://img.shields.io/badge/API-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Qdrant](https://img.shields.io/badge/Vector%20DB-Qdrant-dc2626?style=for-the-badge&logo=qdrant&logoColor=white)](https://qdrant.tech/)
+[![Docker](https://img.shields.io/badge/Containers-Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![MLflow](https://img.shields.io/badge/Experiment%20Tracking-MLflow-0194E2?style=for-the-badge&logo=mlflow&logoColor=white)](https://mlflow.org/)
+[![DVC](https://img.shields.io/badge/Data%20Versioning-DVC-13ADC7?style=for-the-badge&logo=dvc&logoColor=white)](https://dvc.org/)
+[![GitHub Actions](https://img.shields.io/badge/CI%2FCD-GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/features/actions)
+[![Locust](https://img.shields.io/badge/Load%20Testing-Locust-16A34A?style=for-the-badge)](https://locust.io/)
+
 | Layer | Technology |
 |-------|------------|
 | **API** | FastAPI, Pydantic, Uvicorn |
 | **RAG orchestration** | LangChain (document loaders & text splitters) |
 | **Vector database** | Qdrant |
-| **LLM / embedding backends** | Qwen3 via Hugging Face Transformers & Sentence-Transformers · Ollama · Cohere · Gemini |
+| **LLM / embedding backends** | Qwen3 via Hugging Face Transformers & Sentence-Transformers · Ollama · vLLM (OpenAI-compatible API)· Cohere · Gemini |
 | **Evaluation** | RAGAS (Faithfulness, ResponseRelevancy, LLMContextPrecision/Recall, AspectCritic) |
 | **Experiment tracking** | MLflow |
 | **Data versioning** | DVC |
@@ -175,7 +184,6 @@ If `data/processed/egyptian_civil_code.json` does not exist when the API first n
 | **CI/CD** | GitHub Actions |
 | **Load testing** | Locust |
 | **Tooling** | uv, pre-commit, pyproject.toml |
-
 
 ## 📂 Project Structure
 
@@ -226,7 +234,7 @@ If `data/processed/egyptian_civil_code.json` does not exist when the API first n
 │           │   ├── LLMEnums.py
 │           │   ├── LLMInterface.py
 │           │   ├── LLMProviderFactory.py
-│           │   ├── providers/    # Cohere, Gemini, Ollama, Qwen
+│           │   ├── providers/    # Cohere, Gemini, Ollama, Qwen, VLLM
 │           │   └── templates/
 │           │       └── locales/  # ar/ and en/ prompts: metadata_extraction.py, rag.py
 │           └── vectordb/
@@ -243,6 +251,91 @@ If `data/processed/egyptian_civil_code.json` does not exist when the API first n
 ├── .pre-commit-config.yaml
 ├── .python-version
 └── README.md
+```
+
+## ⚙️ Setup & Installation
+
+### Run the Q&A system on another machine in 3 commands
+
+**Prerequisites:** [Git](https://git-scm.com/) and [Docker](https://docs.docker.com/get-docker/) with Docker Compose.
+
+```bash
+# 1. Get the code
+git clone https://github.com/BasmaBalam/Arabic-Legal-Document-QA.git && cd arabic-legal-document-qa
+
+# 2. Create your environment file (then edit it: model backend, model IDs, API keys)
+cp src/arabic_legal_document_qa/.env.example .env
+
+# 3. Build and start the whole stack
+docker compose -f docker/docker-compose.yml up --build -d
+```
+Before starting the application: Review your .env file and configure the model settings according to your chosen provider.
+
+Choose the generation and embedding backends supported by the project.
+
+Set the corresponding model IDs for your selected providers.
+
+Configure API keys when required by your chosen provider, such as Cohere or Gemini.
+
+For Ollama or vLLM, ensure the required inference service is running and reachable from the application.
+
+Check the model configuration for RAGAS evaluation if you want to run the evaluation pipeline.
+
+The example environment file provides the initial configuration. You do not need to configure every provider; use the settings required for your chosen setup.
+
+Then index the corpus once and ask your first question:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/index -H "Content-Type: application/json" \
+  -d '{"chunk_size": 1000, "overlap_size": 100, "do_reset": true}'
+
+curl -X POST http://localhost:8000/api/v1/ask -H "Content-Type: application/json" \
+  -d '{"question": "What does the Civil Code say about contracts of sale?", "limit": 10}'
+```
+
+Open **http://localhost:8000/docs** to explore the API interactively.
+
+### Configuration
+
+The most important settings in `.env`:
+
+| Variable | Purpose |
+|----------|---------|
+| `GENERATION_BACKEND` / `GENERATION_MODEL_ID` | LLM provider (`QWEN`, `OLLAMA`, `COHERE`, `GEMINI`, `VLLM`) and model. |
+| `EMBEDDING_BACKEND` / `EMBEDDING_MODEL_ID` / `EMBEDDING_MODEL_SIZE` | Embedding provider, model, and vector dimension. |
+| `COHERE_API_KEY` / `GEMINI_API_KEY` | Credentials for hosted providers. |
+| `OLLAMA_HOST` / `OLLAMA_KEEP_ALIVE` | Ollama server URL and model keep-alive. |
+| `DEFAULT_INPUT_MAX_CHARACTERS` / `DEFAULT_GENERATION_MAX_OUTPUT_TOKENS` / `DEFAULT_GENERATION_TEMPERATURE` | Generation defaults. |
+| `ENABLE_THINKING` | Enable Qwen/Ollama "thinking" mode. |
+| `VECTOR_DB_PATH` / `VECTOR_DB_DISTANCE_METHOD` | Qdrant storage location and distance metric (`Cosine`, `Dot`, `Euclid`, `Manhattan`). |
+| `EVALUATION_MODEL_ID` / `EVALUATION_EMBEDDING_MODEL_ID` | Models used as the RAGAS judge. |
+| `MLFLOW_TRACKING_URI` / `MLFLOW_EXPERIMENT_NAME` | MLflow tracking configuration. |
+| `VLLM_BASE_URL` | Base URL of the vLLM OpenAI-compatible API, e.g. http://127.0.0.1:8001/v1. |
+| `VLLM_API_KEY` | API key sent by the OpenAI client; configure it to match the vLLM server's authentication settings. |
+| `VLLM_MODEL_ID` | Identifier of the model served by vLLM, e.g. Qwen/Qwen3-0.6B. |
+
+<summary><strong>Local development (without Docker)</strong></summary>
+
+```bash
+# Install dependencies (Python version pinned in .python-version)
+uv sync
+
+# Fetch DVC-tracked data and build the processed corpus
+dvc pull && dvc repro
+
+# Configure the environment
+cp src/arabic_legal_document_qa/.env.example .env
+
+# Start the API
+uv run uvicorn arabic_legal_document_qa.main:app --reload --port 8000
+```
+
+Useful extras:
+
+```bash
+uv run pre-commit instal                                  # lint/format hooks
+uv run mlflow ui --backend-store-uri sqlite:///mlflow.db  # browse evaluation runs
+uv run locust -f loadtest/locustfile.py --host http://127.0.0.1:8000  # load test
 ```
 
 ## 🚀 API Endpoints
@@ -337,76 +430,6 @@ curl -X POST http://localhost:8000/api/v1/evaluation \
 ```
 
 Failure: `400` with `EVALUATION_FAILED`.
-
-
-## ⚙️ Setup & Installation
-
-### Run the Q&A system on another machine in 3 commands
-
-**Prerequisites:** [Git](https://git-scm.com/) and [Docker](https://docs.docker.com/get-docker/) with Docker Compose.
-
-```bash
-# 1. Get the code
-git clone https://github.com/BasmaBalam/Arabic-Legal-Document-QA.git && cd arabic-legal-document-qa
-
-# 2. Create your environment file (then edit it: model backend, model IDs, API keys)
-cp src/arabic_legal_document_qa/.env.example .env
-
-# 3. Build and start the whole stack
-docker compose -f docker/docker-compose.yml up --build -d
-```
-
-Then index the corpus once and ask your first question:
-
-```bash
-curl -X POST http://localhost:8000/api/v1/index -H "Content-Type: application/json" \
-  -d '{"chunk_size": 1000, "overlap_size": 100, "do_reset": true}'
-
-curl -X POST http://localhost:8000/api/v1/ask -H "Content-Type: application/json" \
-  -d '{"question": "What does the Civil Code say about contracts of sale?", "limit": 10}'
-```
-
-Open **http://localhost:8000/docs** to explore the API interactively.
-
-### Configuration
-
-The most important settings in `.env`:
-
-| Variable | Purpose |
-|----------|---------|
-| `GENERATION_BACKEND` / `GENERATION_MODEL_ID` | LLM provider (`QWEN`, `OLLAMA`, `COHERE`, `GEMINI`) and model. |
-| `EMBEDDING_BACKEND` / `EMBEDDING_MODEL_ID` / `EMBEDDING_MODEL_SIZE` | Embedding provider, model, and vector dimension. |
-| `COHERE_API_KEY` / `GEMINI_API_KEY` | Credentials for hosted providers. |
-| `OLLAMA_HOST` / `OLLAMA_KEEP_ALIVE` | Ollama server URL and model keep-alive. |
-| `DEFAULT_INPUT_MAX_CHARACTERS` / `DEFAULT_GENERATION_MAX_OUTPUT_TOKENS` / `DEFAULT_GENERATION_TEMPERATURE` | Generation defaults. |
-| `ENABLE_THINKING` | Enable Qwen/Ollama "thinking" mode. |
-| `VECTOR_DB_PATH` / `VECTOR_DB_DISTANCE_METHOD` | Qdrant storage location and distance metric (`Cosine`, `Dot`, `Euclid`, `Manhattan`). |
-| `EVALUATION_MODEL_ID` / `EVALUATION_EMBEDDING_MODEL_ID` | Models used as the RAGAS judge. |
-| `MLFLOW_TRACKING_URI` / `MLFLOW_EXPERIMENT_NAME` | MLflow tracking configuration. |
-
-<summary><strong>Local development (without Docker)</strong></summary>
-
-```bash
-# Install dependencies (Python version pinned in .python-version)
-uv sync
-
-# Fetch DVC-tracked data and build the processed corpus
-dvc pull && dvc repro
-
-# Configure the environment
-cp src/arabic_legal_document_qa/.env.example .env
-
-# Start the API
-uv run uvicorn arabic_legal_document_qa.main:app --reload --port 8000
-```
-
-Useful extras:
-
-```bash
-uv run pre-commit instal                                  # lint/format hooks
-uv run mlflow ui --backend-store-uri sqlite:///mlflow.db  # browse evaluation runs
-uv run locust -f loadtest/locustfile.py --host http://127.0.0.1:8000  # load test
-```
 
 ## 👨‍💻 Author
 

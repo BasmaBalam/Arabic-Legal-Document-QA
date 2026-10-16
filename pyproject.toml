@@ -3,7 +3,7 @@ name = "arabic-legal-document-qa"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.13,<3.14"
 dependencies = [
     "dvc>=3.67.1",
     "fastapi>=0.141.1",
@@ -27,12 +27,12 @@ dependencies = [
     "google>=3.0.0",
     "ollama>=0.6.2",
     "langchain-ollama>=1.1.0",
-    "llmcompressor>=0.14.0",
     "datasets>=5.0.1",
-    "torch==2.11.0",
+    "torch==2.10.0",
     "openai>=3.3.0",
     "bentoml>=1.4.39",
     "locust>=2.46.7",
+    "vllm==0.19.1",
 ]
 
 [project.scripts]

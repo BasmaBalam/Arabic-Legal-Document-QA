@@ -1,5 +1,5 @@
 from .LLMEnums import LLMEnum
-from .providers import CohereProvider, GeminiProvider, OllamaProvider, QwenProvider
+from .providers import CohereProvider, GeminiProvider, OllamaProvider, QwenProvider, VLLMProvider
 
 
 class LLMProviderFactory:
@@ -69,6 +69,19 @@ class LLMProviderFactory:
                 ),
                 enable_thinking=self.config.ENABLE_THINKING,
                 keep_alive=self.config.OLLAMA_KEEP_ALIVE,
+            )
+
+        if provider == LLMEnum.VLLM.value:
+            return VLLMProvider(
+                base_url=self.config.VLLM_BASE_URL,
+                model_id=self.config.VLLM_MODEL_ID,
+                api_key=self.config.VLLM_API_KEY,
+                default_generation_max_output_tokens=(
+                    self.config.DEFAULT_GENERATION_MAX_OUTPUT_TOKENS
+                ),
+                default_generation_temperature=(
+                    self.config.DEFAULT_GENERATION_TEMPERATURE
+                ),
             )
 
         return None
