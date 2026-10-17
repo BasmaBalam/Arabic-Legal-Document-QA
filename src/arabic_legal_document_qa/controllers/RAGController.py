@@ -96,7 +96,7 @@ class RAGController(BaseController):
             The number of records currently stored in the vector database.
         """
         return self.vectorDB_controller.get_document_count()
-
+    
     def extract_query_metadata(self, question: str) -> LegalQueryMetadata:
         """
         Extract legal metadata from a user question.
@@ -113,20 +113,23 @@ class RAGController(BaseController):
         Returns:
             Extracted legal query metadata, or an empty metadata object if extraction fails.
         """
+
         prompt = self.template_parser.get(
             "metadata_extraction",
             "prompt",
             {"question": question},
         )
 
-        response = self.generation_client.generate_text(prompt=prompt)
-
         try:
-            # Remove markdown code fences if the model returns them
+            response = self.generation_client.generate_text(prompt=prompt)
+
+            if not isinstance(response, str) or not response.strip():
+                return LegalQueryMetadata()
+
             cleaned_response = response.strip()
 
             cleaned_response = re.sub(
-                r"^```json\s*|\s*```$",
+                r"^```(?:json)?\s*|\s*```$",
                 "",
                 cleaned_response,
                 flags=re.IGNORECASE,
@@ -137,8 +140,7 @@ class RAGController(BaseController):
             return LegalQueryMetadata.model_validate(metadata_dict)
 
         except (json.JSONDecodeError, TypeError, ValueError) as exc:
-            print(f"Failed to extract legal metadata: {exc}")
-
+            self.logger.warning("Failed to extract legal metadata: %s", exc)
             return LegalQueryMetadata()
 
     def build_metadata_filter(self, metadata: LegalQueryMetadata) -> dict | None:
