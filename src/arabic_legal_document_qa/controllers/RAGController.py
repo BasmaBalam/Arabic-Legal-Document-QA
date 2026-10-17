@@ -96,7 +96,7 @@ class RAGController(BaseController):
             The number of records currently stored in the vector database.
         """
         return self.vectorDB_controller.get_document_count()
-    
+
     def extract_query_metadata(self, question: str) -> LegalQueryMetadata:
         """
         Extract legal metadata from a user question.
