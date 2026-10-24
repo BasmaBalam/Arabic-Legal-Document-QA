@@ -255,88 +255,181 @@ If `data/processed/egyptian_civil_code.json` does not exist when the API first n
 
 ## ⚙️ Setup & Installation
 
-### Run the Q&A system on another machine in 3 commands
+### Prerequisites
 
-**Prerequisites:** [Git](https://git-scm.com/) and [Docker](https://docs.docker.com/get-docker/) with Docker Compose.
+Before running the project, make sure the following tools and services are available:
+
+- **Git** — to clone the repository.
+- **Docker Desktop with Docker Compose** — to run the API and Qdrant containers.
+- **Ollama** — if `OLLAMA` is selected as the generation or embedding backend.
+- **Python and `uv`** — required only for local development without Docker.
+- **DVC access** — required to download the tracked corpus if it is not already available locally.
+
+The project exposes the API on port `8000`. Qdrant uses ports `6333` (HTTP) and `6334` (gRPC). Ensure these ports are available.
+
+### Option 1: Run with Docker Compose
+
+#### 1. Clone the repository
 
 ```bash
-# 1. Get the code
-git clone https://github.com/BasmaBalam/Arabic-Legal-Document-QA.git && cd arabic-legal-document-qa
+git clone https://github.com/BasmaBalam/Arabic-Legal-Document-QA.git
+cd Arabic-Legal-Document-QA
+```
 
-# 2. Create your environment file (then edit it: model backend, model IDs, API keys)
+Use the actual directory name created by Git if it differs.
+
+#### 2. Configure the environment
+
+Create the root `.env` file:
+
+```bash
 cp src/arabic_legal_document_qa/.env.example .env
+```
 
-# 3. Build and start the whole stack
+Edit `.env` before starting the application. Choose the generation and embedding backends, set their corresponding model IDs, and provide credentials only when the selected providers require them.
+
+For the default Docker setup, if Ollama runs on the host machine, configure:
+
+```dotenv
+OLLAMA_HOST=http://host.docker.internal:11434
+```
+
+The API container must be able to reach the Ollama service. The Compose configuration starts the API and Qdrant; it does not start Ollama or download Ollama models automatically.
+
+If you use Ollama, start it and download the models required by your configuration before indexing the corpus. For example, if these are the model IDs you selected:
+
+```bash
+ollama pull qwen3:8b
+ollama pull qwen3-embedding:0.6b
+```
+
+Use the actual model names supported by your installed Ollama version and configured providers.
+
+#### 3. Start the application
+
+```bash
 docker compose -f docker/docker-compose.yml up --build -d
 ```
-Before starting the application: Review your .env file and configure the model settings according to your chosen provider.
 
-Choose the generation and embedding backends supported by the project.
-
-Set the corresponding model IDs for your selected providers.
-
-Configure API keys when required by your chosen provider, such as Cohere or Gemini.
-
-For Ollama or vLLM, ensure the required inference service is running and reachable from the application.
-
-Check the model configuration for RAGAS evaluation if you want to run the evaluation pipeline.
-
-The example environment file provides the initial configuration. You do not need to configure every provider; use the settings required for your chosen setup.
-
-Then index the corpus once and ask your first question:
+Check the container status and logs:
 
 ```bash
-curl -X POST http://localhost:8000/api/v1/index -H "Content-Type: application/json" \
-  -d '{"chunk_size": 1000, "overlap_size": 100, "do_reset": true}'
+docker compose -f docker/docker-compose.yml ps
+docker compose -f docker/docker-compose.yml logs app
+docker compose -f docker/docker-compose.yml logs qdrant
+```
 
-curl -X POST http://localhost:8000/api/v1/ask -H "Content-Type: application/json" \
+Wait until the API and Qdrant are ready before sending requests. If a container is unhealthy or the application exits, inspect its logs first.
+
+#### 4. Check the API
+
+Open the interactive API documentation:
+
+http://localhost:8000/docs
+
+Check the health endpoint:
+
+```bash
+curl http://localhost:8000/api/v1/health
+```
+
+#### 5. Index the legal corpus
+
+Run indexing once after the application and its required model services are ready:
+
+```bash
+curl -X POST http://localhost:8000/api/v1/index \
+  -H "Content-Type: application/json" \
+  -d '{"chunk_size": 1000, "overlap_size": 100, "do_reset": true}'
+```
+
+The `do_reset` option recreates the collection, so use it only when you intend to reset the existing index.
+
+#### 6. Ask a question
+
+```bash
+curl -X POST http://localhost:8000/api/v1/ask \
+  -H "Content-Type: application/json" \
   -d '{"question": "What does the Civil Code say about contracts of sale?", "limit": 10}'
 ```
 
-Open **http://localhost:8000/docs** to explore the API interactively.
+The response contains the generated answer and its source citations.
+
+### Option 2: Local development without Docker
+
+#### 1. Install dependencies
+
+Use the Python version specified in `.python-version`, then run:
+
+```bash
+uv sync
+```
+
+#### 2. Prepare the corpus
+
+If the DVC-tracked files are not already available locally, configure access to the project's DVC remote and run:
+
+```bash
+dvc pull
+dvc repro
+```
+
+The DVC remote must be accessible to the person running the project. If the processed JSON is already present and the pipeline does not need to be rebuilt, follow the repository's existing data setup instead.
+
+#### 3. Configure the environment
+
+The current `config.py` specifies this environment-file path:
+
+```text
+src/arabic_legal_document_qa/.env
+```
+
+Therefore, for local development, create the file at that location:
+
+```bash
+cp src/arabic_legal_document_qa/.env.example \
+   src/arabic_legal_document_qa/.env
+```
+
+Edit the file to match the chosen providers and model IDs.
+
+#### 4. Start the API
+
+```bash
+uv run uvicorn arabic_legal_document_qa.main:app \
+  --reload --port 8000
+```
+
+The API is available at http://localhost:8000, and its interactive documentation is at http://localhost:8000/docs.
 
 ### Configuration
 
-The most important settings in `.env`:
+The project uses environment variables to configure its application, model providers, vector database, evaluation models, and experiment tracking.
 
-| Variable | Purpose |
-|----------|---------|
-| `GENERATION_BACKEND` / `GENERATION_MODEL_ID` | LLM provider (`QWEN`, `OLLAMA`, `COHERE`, `GEMINI`, `VLLM`) and model. |
-| `EMBEDDING_BACKEND` / `EMBEDDING_MODEL_ID` / `EMBEDDING_MODEL_SIZE` | Embedding provider, model, and vector dimension. |
-| `COHERE_API_KEY` / `GEMINI_API_KEY` | Credentials for hosted providers. |
-| `OLLAMA_HOST` / `OLLAMA_KEEP_ALIVE` | Ollama server URL and model keep-alive. |
-| `DEFAULT_INPUT_MAX_CHARACTERS` / `DEFAULT_GENERATION_MAX_OUTPUT_TOKENS` / `DEFAULT_GENERATION_TEMPERATURE` | Generation defaults. |
-| `ENABLE_THINKING` | Enable Qwen/Ollama "thinking" mode. |
-| `VECTOR_DB_PATH` / `VECTOR_DB_DISTANCE_METHOD` | Qdrant storage location and distance metric (`Cosine`, `Dot`, `Euclid`, `Manhattan`). |
-| `EVALUATION_MODEL_ID` / `EVALUATION_EMBEDDING_MODEL_ID` | Models used as the RAGAS judge. |
-| `MLFLOW_TRACKING_URI` / `MLFLOW_EXPERIMENT_NAME` | MLflow tracking configuration. |
-| `VLLM_BASE_URL` | Base URL of the vLLM OpenAI-compatible API, e.g. http://127.0.0.1:8001/v1. |
-| `VLLM_API_KEY` | API key sent by the OpenAI client; configure it to match the vLLM server's authentication settings. |
-| `VLLM_MODEL_ID` | Identifier of the model served by vLLM, e.g. Qwen/Qwen3-0.6B. |
+The `.env.example` file documents the configuration variables. Copy it to the environment-file location required by the selected run mode, then configure the values required by that setup.
 
-<summary><strong>Local development (without Docker)</strong></summary>
+Do not commit actual API keys or other secrets. Hosted providers such as Cohere or Gemini require valid credentials when selected. Ollama and vLLM require their inference services to be running and reachable.
 
-```bash
-# Install dependencies (Python version pinned in .python-version)
-uv sync
+### Additional services and ports
 
-# Fetch DVC-tracked data and build the processed corpus
-dvc pull && dvc repro
+| Component | Default address / port | Notes |
+|---|---|---|
+| FastAPI | `http://localhost:8000` | API and interactive documentation |
+| Qdrant HTTP | `localhost:6333` | Vector database API |
+| Qdrant gRPC | `localhost:6334` | Vector database gRPC |
+| Ollama | `http://localhost:11434` on the host | Must be started separately when selected |
+| vLLM | Configured by `VLLM_BASE_URL` | Must be started separately when selected |
+| MLflow UI | `http://127.0.0.1:5000` in the local configuration | Start separately if you want to browse experiment runs |
 
-# Configure the environment
-cp src/arabic_legal_document_qa/.env.example .env
+The Docker Compose file does not start Ollama, vLLM, or an MLflow server. These services must be configured separately when required by the selected workflow.
 
-# Start the API
-uv run uvicorn arabic_legal_document_qa.main:app --reload --port 8000
-```
+### Troubleshooting
 
-Useful extras:
-
-```bash
-uv run pre-commit instal                                  # lint/format hooks
-uv run mlflow ui --backend-store-uri sqlite:///mlflow.db  # browse evaluation runs
-uv run locust -f loadtest/locustfile.py --host http://127.0.0.1:8000  # load test
-```
+- **The API container exits during startup:** Inspect `docker compose -f docker/docker-compose.yml logs app` and verify that the required environment variables are configured.
+- **Ollama connection errors:** Confirm that Ollama is running, the configured models are available, and `OLLAMA_HOST` points to an address reachable from the application container.
+- **Qdrant is unhealthy:** Inspect the Qdrant container logs and verify that its health-check command is available in the image.
+- **DVC download errors:** Verify that the configured DVC remote is accessible and that any required credentials are available.
+- **Evaluation errors:** Verify the selected evaluation backend, model IDs, credentials, and evaluation dataset before running the evaluation endpoint.
 
 ## 🚀 API Endpoints
 
